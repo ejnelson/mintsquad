@@ -13,8 +13,6 @@ export const Restricted = () => {
 
     const { publicKey } = wallet?.adapter || {}
     const { connection } = useConnection()
-    console.log('connection', connection)
-    console.log('wallet', wallet)
     const { nfts, isLoading, error } = useWalletNfts({
         publicAddress: publicKey,
         // pass your connection object to use specific RPC node
@@ -23,7 +21,5 @@ export const Restricted = () => {
     const walletHasValidNfts = nfts?.some((nft) =>
         validAuthorities.includes(nft.updateAuthority)
     )
-    console.log('nfts', nfts)
-    console.log('wallet', walletHasValidNfts)
     return <>{walletHasValidNfts && <WatcherPage />}</>
 }
