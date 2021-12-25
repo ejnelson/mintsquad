@@ -176,7 +176,7 @@ export const Watcher = ({ projectName, chartType }) => {
             }
         }
     }
-    setInterval(getNewData, 1000)
+    setInterval(getNewData, 60000)
     return (
         <>
             <HighchartsReact
