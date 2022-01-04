@@ -1,8 +1,8 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useContext, memo } from 'react'
 import Highcharts from 'highcharts/highstock'
 import HighchartsReact from 'highcharts-react-official'
 import axios from 'axios'
-import { filter, find } from 'lodash'
+import { filter } from 'lodash'
 // import { StyledHighcharts } from './StyledHighcharts'
 const LISTED_NFT_API =
     'https://api-mainnet.magiceden.io/rpc/getListedNFTsByQuery'
@@ -56,9 +56,9 @@ const API = 'https://api-mainnet.magiceden.io/rpc/getCollectionEscrowStats/'
 
 // const LAMPORTS_PER_SOL = 1000000000
 
-export const Watcher = ({ projectName, chartType }) => {
+export const Watcher = memo(({ projectName, chartType }) => {
     const chartComponent = useRef(null)
-
+    console.log('projectName', projectName)
     useEffect(() => {
         if (chartType === 'Floor') {
             chartComponent.current.chart.addSeries({
@@ -146,7 +146,6 @@ export const Watcher = ({ projectName, chartType }) => {
                 const floorPrice = filteredResults[0].price
                 const fifthFromFloorPrice = filteredResults[4].price
                 const tenthFromFloorPrice = filteredResults[9].price
-
                 seriesFloor.addPoint(
                     [new Date().getTime(), floorPrice],
                     false,
@@ -176,7 +175,7 @@ export const Watcher = ({ projectName, chartType }) => {
             }
         }
     }
-    setInterval(getNewData, 60000)
+    setInterval(getNewData, 1000)
     return (
         <>
             <HighchartsReact
@@ -187,4 +186,4 @@ export const Watcher = ({ projectName, chartType }) => {
             />
         </>
     )
-}
+})

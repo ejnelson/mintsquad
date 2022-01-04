@@ -1,5 +1,6 @@
 import { Watcher } from './Watcher'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { watch } from 'fs'
 
 export const WatcherPage = () => {
     const [projectName, setProjectName] = useState('')
@@ -14,6 +15,10 @@ export const WatcherPage = () => {
         setWatcherName(projectName)
     }
 
+    const getFloor = useCallback(
+        () => <Watcher chartType={'Floor'} projectName={'chainmyth'} />,
+        []
+    )
     return (
         <div style={{ padding: 40 }}>
             {!watcherName && (
@@ -31,10 +36,8 @@ export const WatcherPage = () => {
                     </button>
                 </form>
             )}
-            {watcherName && (
-                <Watcher chartType={'Floor'} projectName={watcherName} />
-            )}
-            {watcherName && (
+            {getFloor()}
+            {/* {watcherName && (
                 <Watcher chartType={'Listed'} projectName={watcherName} />
             )}
             {watcherName && (
@@ -42,7 +45,7 @@ export const WatcherPage = () => {
                     chartType={'Volume/Floor Price'}
                     projectName={watcherName}
                 />
-            )}
+            )} */}
         </div>
     )
 }

@@ -20,10 +20,9 @@ import { Restricted } from './components/Restricted'
 import { Navigation } from './Navigation'
 import { Notification } from './Notification'
 
-export const Wallet: FC = () => {
+export const Wallet = () => {
     // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
     const network = WalletAdapterNetwork.Mainnet
-
     // You can also provide a custom RPC endpoint
     const endpoint = useMemo(() => clusterApiUrl(network), [network])
 
@@ -44,7 +43,7 @@ export const Wallet: FC = () => {
     )
 
     const onError = useCallback(
-        (error: WalletError) =>
+        (error) =>
             toast.custom(
                 <Notification
                     message={
