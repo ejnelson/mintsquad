@@ -29,7 +29,22 @@ export const Restricted = () => {
     const walletHasEditAccessToken = nfts?.some((nft) =>
         editAccessTokenIds.includes(nft.mint)
     )
+    console.log('nfts', nfts)
     console.log('can edit', walletHasEditAccessToken)
 
-    return <>{walletHasValidNfts && <MintSquad editAccess={true} />}</>
+    return (
+        <>
+            {isLoading ? (
+                <div>loading</div>
+            ) : walletHasValidNfts ? (
+                <MintSquad editAccess={walletHasEditAccessToken} />
+            ) : (
+                <div>
+                    You are not authorized, please connect with a wallet
+                    containing a Degen Ape Academy NFT to access the Mint Squad
+                    Mint Board
+                </div>
+            )}
+        </>
+    )
 }

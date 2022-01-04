@@ -1,4 +1,13 @@
-import { ref, getDatabase, set, onValue, get, child } from 'firebase/database'
+import {
+    ref,
+    getDatabase,
+    set,
+    onValue,
+    get,
+    child,
+    remove,
+    push,
+} from 'firebase/database'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
@@ -49,10 +58,45 @@ export const MintSquad = ({ editAccess }) => {
         set(ref(getDatabase(), key), edits)
         setIsEditing(null)
     }
+    const handleDelete = (key) => {
+        remove(ref(getDatabase(), key))
+    }
+    const handleAddProject = () => {
+        push(ref(getDatabase()), {
+            name: '',
+            price: '',
+            supply: '',
+            discord: '',
+            twitter: '',
+            overview: '',
+        }).then((db) => {
+            console.log('ds', db)
+            get(db).then((snapshot) => {
+                console.log('yo', snapshot.key)
+                console.log('snapshot', snapshot.val())
+                setEdits({
+                    name: '',
+                    price: '',
+                    supply: '',
+                    discord: '',
+                    twitter: '',
+                    overview: '',
+                })
+                setIsEditing(snapshot.key)
+            })
+        })
+    }
     console.log('editing', isEditing)
     return (
         <div>
+            {}
+            {editAccess && (
+                <Button onClick={handleAddProject} variant="contained">
+                    addProject
+                </Button>
+            )}
             {!loading &&
+                snapshots.val() &&
                 Object.keys(snapshots.val()).map((key, i) => {
                     const disabled = isEditing !== key
                     const values = disabled ? snapshots.val()[key] : edits
@@ -144,22 +188,31 @@ export const MintSquad = ({ editAccess }) => {
                                     })
                                 }
                             />
-                            {editAccess &&
-                                (disabled ? (
+                            {editAccess && (
+                                <>
+                                    {disabled ? (
+                                        <Button
+                                            onClick={() => handleEdit(key)}
+                                            variant="contained"
+                                        >
+                                            Edit
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            onClick={() => handleSave(key)}
+                                            variant="contained"
+                                        >
+                                            Save
+                                        </Button>
+                                    )}
                                     <Button
-                                        onClick={() => handleEdit(key)}
+                                        onClick={() => handleDelete(key)}
                                         variant="contained"
                                     >
-                                        Edit
+                                        Delete Project
                                     </Button>
-                                ) : (
-                                    <Button
-                                        onClick={() => handleSave(key)}
-                                        variant="contained"
-                                    >
-                                        Save
-                                    </Button>
-                                ))}
+                                </>
+                            )}
                         </Box>
                     )
                 })}
