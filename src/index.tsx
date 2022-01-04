@@ -1,14 +1,14 @@
-import React, { StrictMode } from 'react';
-import ReactDOM from 'react-dom';
-import { Wallet } from './Wallet';
+import React, { StrictMode } from 'react'
+import ReactDOM from 'react-dom'
+import { App } from './App'
 
 // Use require instead of import, and order matters
-require('@solana/wallet-adapter-react-ui/styles.css');
-require('./index.css');
+require('@solana/wallet-adapter-react-ui/styles.css')
+require('./index.css')
 
 ReactDOM.render(
     <StrictMode>
-        <Wallet />
+        <App />
     </StrictMode>,
     document.getElementById('root')
-);
+)

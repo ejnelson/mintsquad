@@ -14,13 +14,13 @@ import {
     getTorusWallet,
 } from '@solana/wallet-adapter-wallets'
 import { clusterApiUrl } from '@solana/web3.js'
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
-import { Restricted } from './components/Restricted'
-import { Navigation } from './Navigation'
+import { Layout } from './components/Layout'
 import { Notification } from './Notification'
+import { ThemeProvider } from './ThemeProvider'
 
-export const Wallet = () => {
+export const App = () => {
     // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
     const network = WalletAdapterNetwork.Mainnet
     // You can also provide a custom RPC endpoint
@@ -58,14 +58,15 @@ export const Wallet = () => {
     )
 
     return (
-        <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={wallets} onError={onError} autoConnect>
-                <WalletModalProvider>
-                    <Navigation />
-                    <Restricted />
-                </WalletModalProvider>
-                <Toaster position="bottom-right" reverseOrder={false} />
-            </WalletProvider>
-        </ConnectionProvider>
+        <ThemeProvider>
+            <ConnectionProvider endpoint={endpoint}>
+                <WalletProvider wallets={wallets} onError={onError} autoConnect>
+                    <WalletModalProvider>
+                        <Layout />
+                    </WalletModalProvider>
+                    <Toaster position="bottom-right" reverseOrder={false} />
+                </WalletProvider>
+            </ConnectionProvider>
+        </ThemeProvider>
     )
 }
