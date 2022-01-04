@@ -2,7 +2,7 @@
     "name": "MintSquad",
     "version": "0.6.0",
     "author": "Erik Nelson",
-    "repository": "https://github.com/ejnelson/mrsbot",
+    "repository": "https://github.com/ejnelson/mintsquad",
     "license": "Apache-2.0",
     "files": [
         "public",
