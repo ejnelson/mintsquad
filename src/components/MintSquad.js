@@ -184,12 +184,36 @@ export const MintSquad = ({ editAccess }) => {
         })
         setIsEditing(key)
     }
+
     useEffect(() => {
         const getTwitterPics = async () => {
             const promises = Object.keys(snapshots.val()).map(
                 async (key, i) => {
                     const values = snapshots.val()[key]
-                    return axios.get(herokuProxy + api + values.twitter, config)
+                    const {
+                        data: { access_token },
+                    } = await axios.post(
+                        herokuProxy +
+                            'https://api.twitter.com/oauth2/token?grant_type=client_credentials',
+                        {},
+                        {
+                            auth: {
+                                username: process.env.REACT_APP_TWITTER_API_KEY,
+                                password:
+                                    process.env
+                                        .REACT_APP_TWITTER_API_KEY_SECRET,
+                            },
+                        }
+                    )
+                    console.log('token', access_token)
+                    return axios.get(herokuProxy + api + values.twitter, {
+                        headers: {
+                            Authorization: `Bearer ${access_token}`,
+                        },
+                        params: {
+                            'user.fields': 'profile_image_url',
+                        },
+                    })
                 }
             )
             await Promise.all(promises).then((res) => {
