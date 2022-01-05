@@ -22,6 +22,7 @@ import {
     AccessTimeFilledRounded,
 } from '@mui/icons-material'
 import { parseISO, parse, format } from 'date-fns'
+import Linkify from 'react-linkify'
 
 export const ProjectDescription = ({ activeData }) => {
     const theme = useTheme()
@@ -101,8 +102,11 @@ export const ProjectDescription = ({ activeData }) => {
                         </SvgIcon>
                     </IconButton>
                 </Box>
-                <Paper elevation={1} sx={{ padding: '16px' }}>
-                    {activeData.overview}
+                <Paper
+                    elevation={1}
+                    sx={{ padding: '16px', whiteSpace: 'pre-wrap' }}
+                >
+                    <Linkify>{activeData.overview}</Linkify>
                 </Paper>
             </Paper>
         </Box>

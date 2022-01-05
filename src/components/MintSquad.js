@@ -239,7 +239,11 @@ export const MintSquad = ({ editAccess }) => {
     const handleCloseModal = () => {
         setIsModalOpen(false)
     }
-    const activeData = snapshots ? snapshots.val()[activeProjectKey] : null
+    console.log('snaps', snapshots)
+    const activeData =
+        snapshots && !loading && activeProjectKey
+            ? snapshots.val()[activeProjectKey]
+            : null
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -260,10 +264,14 @@ export const MintSquad = ({ editAccess }) => {
                                         sx={{
                                             height: '40px',
                                             width: '40px',
+                                            color: 'white',
                                         }}
                                     />
                                 </ListItemIcon>
-                                <ListItemText primary="Add Project" />
+                                <ListItemText
+                                    sx={{ color: 'white' }}
+                                    primary="Add Project"
+                                />
                             </ListItemButton>
                             <Divider />
                         </>
@@ -284,7 +292,10 @@ export const MintSquad = ({ editAccess }) => {
                                             src={twitterPics[key]}
                                         />
                                     </ListItemAvatar>
-                                    <ListItemText primary={values.name} />
+                                    <ListItemText
+                                        sx={{ color: 'white' }}
+                                        primary={values.name}
+                                    />
                                 </ListItemButton>
                             )
                         })}
@@ -298,6 +309,7 @@ export const MintSquad = ({ editAccess }) => {
                         marginLeft: 'auto',
                         marginRight: '16px',
                         marginBottom: '8px',
+                        color: 'white',
                         ...(open && { display: 'none' }),
                     }}
                 >
@@ -310,6 +322,7 @@ export const MintSquad = ({ editAccess }) => {
                         marginTop: 'auto',
                         marginBottom: '8px',
                         marginRight: '16px',
+                        color: 'white',
                         ...(!open && { display: 'none' }),
                     }}
                 >
@@ -343,7 +356,7 @@ const initialState = {
 }
 const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
     const [values, setValues] = useState(initialState)
-    console.log('vaule', values)
+    console.log('values', values)
 
     const handleChange = (key) => (input) => {
         if (key === 'mintDate') {
@@ -352,11 +365,12 @@ const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
 
             setValues({ ...values, [key]: dateAsUtc })
         } else {
+            console.log('input', input)
             setValues({ ...values, [key]: input.target.value })
         }
     }
     const handleCancel = () => {
-        setValues({})
+        setValues(initialState)
         onCloseModal()
     }
     const handleSave = () => {
@@ -430,20 +444,18 @@ const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <TextField
                         label="Price in Sol"
-                        placeholder="1"
+                        placeholder=""
                         margin="normal"
                         sx={{ marginRight: '16px', flexGrow: '1' }}
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         variant="outlined"
                         value={values.price}
                         onChange={handleChange('price')}
                     />
                     <TextField
                         label="Supply"
-                        placeholder="1"
+                        placeholder=""
                         margin="normal"
                         sx={{ flexGrow: '1' }}
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         variant="outlined"
                         value={values.supply}
                         onChange={handleChange('supply')}
@@ -452,20 +464,18 @@ const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <TextField
                         label="Discord Invite Link"
-                        placeholder="1"
+                        placeholder=""
                         margin="normal"
                         sx={{ marginRight: '16px', flexGrow: '1' }}
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         variant="outlined"
                         value={values.discord}
                         onChange={handleChange('discord')}
                     />
                     <TextField
                         label="Twitter Handle (without @)"
-                        placeholder="1"
+                        placeholder=""
                         margin="normal"
                         sx={{ flexGrow: '1' }}
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         variant="outlined"
                         value={values.twitter}
                         onChange={handleChange('twitter')}
