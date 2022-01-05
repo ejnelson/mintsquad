@@ -35,6 +35,7 @@ import {
     ListItemAvatar,
     Modal,
     ListItemButton,
+    Paper,
 } from '@mui/material'
 import {
     InboxIcon,
@@ -361,8 +362,42 @@ export const MintSquad = ({ editAccess }) => {
                     // backgroundColor: theme.palette.background.main,
                 }}
             >
-                {!loading && activeData && (
+                {!loading && activeData ? (
                     <ProjectDescription activeData={activeData} />
+                ) : (
+                    <Box
+                        sx={{
+                            height: '80vh',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Paper
+                            elevation={5}
+                            sx={{
+                                padding: '30px',
+                                borderRadius: '12px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <p
+                                style={{
+                                    fontSize: '90px',
+                                    marginBottom: '-25px',
+                                    marginTop: '-20px',
+                                }}
+                            >
+                                🔮
+                            </p>
+                            <p style={{ fontSize: '20px' }}>
+                                Select a project to get started
+                            </p>
+                        </Paper>
+                    </Box>
                 )}
             </Box>
         </Box>

@@ -29,7 +29,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
-    backgroundImage: 'linear-gradient(to right, #6b21a8 , #38bdf8)',
+    backgroundImage: 'linear-gradient(to right, #380085,#7b21a8 )',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
