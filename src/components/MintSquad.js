@@ -239,7 +239,6 @@ export const MintSquad = ({ editAccess }) => {
     const handleCloseModal = () => {
         setIsModalOpen(false)
     }
-    console.log('snaps', snapshots)
     const activeData =
         snapshots && !loading && activeProjectKey
             ? snapshots.val()[activeProjectKey]
@@ -356,16 +355,13 @@ const initialState = {
 }
 const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
     const [values, setValues] = useState(initialState)
-    console.log('values', values)
 
     const handleChange = (key) => (input) => {
         if (key === 'mintDate') {
-            console.log('input', input)
             const dateAsUtc = format(input, "yyyy-MM-dd'T'HH:mm:ss") + 'Z'
 
             setValues({ ...values, [key]: dateAsUtc })
         } else {
-            console.log('input', input)
             setValues({ ...values, [key]: input.target.value })
         }
     }
@@ -378,10 +374,7 @@ const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
             ...values,
             mintDate: values.mintDate.toString(),
         }).then((db) => {
-            console.log('ds', db)
             get(db).then((snapshot) => {
-                console.log('yo', snapshot.key)
-                console.log('snapshot', snapshot.val())
                 setValues(initialState)
             })
         })
@@ -398,10 +391,7 @@ const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
         boxShadow: 24,
         p: 4,
     }
-    console.log(
-        'mint date',
-        parse(values.mintDate, "yyyy-MM-dd'T'HH:mm:ss'Z'", new Date())
-    )
+
     return (
         <Modal
             open={isModalOpen}
