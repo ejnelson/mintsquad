@@ -5,6 +5,7 @@ import {
     WalletDisconnectButton,
     WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui'
+import { LinearProgress } from '@mui/material'
 
 //working on auth in firebase
 // import { getAuth, signInAnonymously } from 'firebase/auth'
@@ -34,6 +35,8 @@ const editAccessTokenIds = {
     vutek: '3XiXcM94o32Zv2D6CSkSCEZGeJUt2s5f91XmZuRMivaz',
     nftjordy: '6k4YpC3UWdxwCEmxRHgYdcaFJwZkB9oExECXZDttzsUG',
     topogigio: 'A6o66jgJh3fmd9HjvG7PH8iVpUatH2P2UG6pyqjBtXuH',
+    rugnick: 'LHfKguKZwpCQgTZZZzQAGGqUP9f9a2knFYSU586Yd58',
+    ryu: '37SZircdDb6jq2RFXuT3D4qNobBpSo2rZrggkUVonQDg',
 }
 export const Restricted = () => {
     const { wallet } = useWallet()
@@ -55,14 +58,11 @@ export const Restricted = () => {
     return (
         <>
             {isLoading ? (
-                <div>loading</div>
+                <LinearProgress />
             ) : walletHasValidNfts ? (
                 <MintSquad editAccess={walletHasEditAccessToken} />
             ) : (
-                <div>
-                    <WalletMultiButton />
-                    {wallet && <WalletDisconnectButton />}
-                </div>
+                <WalletMultiButton />
             )}
         </>
     )

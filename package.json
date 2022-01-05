@@ -25,9 +25,11 @@
         "analyze": "source-map-explorer 'build/static/js/*.js'"
     },
     "dependencies": {
+        "@date-io/date-fns": "^2.11.0",
         "@emotion/react": "^11.7.1",
         "@emotion/styled": "^11.6.0",
         "@mui/icons-material": "^5.2.5",
+        "@mui/lab": "^5.0.0-alpha.63",
         "@mui/material": "^5.2.7",
         "@nfteyez/sol-rayz-react": "^0.8.2",
         "@solana/wallet-adapter-base": "^0.8.1",
@@ -36,6 +38,10 @@
         "@solana/wallet-adapter-wallets": "^0.13.0",
         "@solana/web3.js": "^1.20.0",
         "axios": "^0.24.0",
+        "date-fns": "^2.28.0",
+        "date-fns-tz": "^1.2.2",
+        "dotenv": "^10.0.0",
+        "dotenv-webpack": "^7.0.3",
         "firebase": "^9.6.1",
         "highcharts": "^9.3.2",
         "highcharts-react-official": "^3.1.0",
@@ -44,7 +50,9 @@
         "react-dom": "^17.0.2",
         "react-firebase-hooks": "^4.0.1",
         "react-hot-toast": "^2.1.1",
-        "shx": "^0.3.3"
+        "shx": "^0.3.3",
+        "twitter": "^1.7.1",
+        "twitter.js": "^0.10.1"
     },
     "devDependencies": {
         "@craco/craco": "^6.3.0",

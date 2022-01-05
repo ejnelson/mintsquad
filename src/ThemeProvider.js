@@ -34,9 +34,9 @@ export const error = {
 }
 
 export const background = {
-    main: '#F7F7F7',
-    light: '#FFFFFF',
-    dark: '#FAFAFA',
+    main: '#FFF',
+    light: '#9E76DA',
+    dark: '#391085',
     exclude: '#EEE5F6',
 }
 
@@ -48,6 +48,11 @@ const theme = createTheme({
             fontSize: '18px',
             fontWeight: 800,
             letterSpacing: '1px',
+        },
+        h2: {
+            fontSize: '28px',
+            fontWeight: 800,
+            letterSpacing: '0px',
         },
     },
     palette: {

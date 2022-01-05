@@ -14,7 +14,6 @@ import {
 import { Twitter } from '@mui/icons-material'
 import { Restricted } from './Restricted'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { WalletDisconnectButton } from '@solana/wallet-adapter-react-ui'
 
 const drawerWidth = 240
 
@@ -61,14 +60,13 @@ export const Layout = () => {
         disconnect()
         setAnchorEl(null)
     }
-    console.log('wallet', wallet)
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar theme={theme}>
                 <Toolbar>
                     <Typography variant="h1" noWrap component="div">
-                        🔮 MINT SQUAD
+                        🔮 MINT $QUAD
                     </Typography>
 
                     <IconButton
