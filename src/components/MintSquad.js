@@ -150,6 +150,7 @@ export const MintSquad = ({ editAccess }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [open, setOpen] = useState(false)
     const api = 'https://api.twitter.com/2/users/by/username/'
+    console.log('process.env.TWITTER_API_KEY', process.env)
     const config = {
         headers: {
             Authorization: `Bearer ${process.env.REACT_APP_TWITTER_BEARER_TOKEN}`,

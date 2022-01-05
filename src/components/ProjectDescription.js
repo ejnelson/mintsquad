@@ -86,7 +86,7 @@ export const ProjectDescription = ({ activeData }) => {
                         target="_blank"
                         color="inherit"
                         aria-label="discord"
-                        href={activeData}
+                        href={activeData.discord}
                         // sx={{
                         //     '&:hover': {
                         //         opacity: 0.4,
