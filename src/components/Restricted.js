@@ -37,6 +37,7 @@ const editAccessTokenIds = {
     topogigio: 'A6o66jgJh3fmd9HjvG7PH8iVpUatH2P2UG6pyqjBtXuH',
     rugnick: 'LHfKguKZwpCQgTZZZzQAGGqUP9f9a2knFYSU586Yd58',
     ryu: '37SZircdDb6jq2RFXuT3D4qNobBpSo2rZrggkUVonQDg',
+    hfp: 'EXSqmmf3Pciy7V99jJinrqpwaJgQiGwGFa4JpPhJAvvB',
 }
 export const Restricted = () => {
     const { wallet } = useWallet()
