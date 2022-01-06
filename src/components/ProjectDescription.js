@@ -1,4 +1,5 @@
 import { MintSquad } from './MintSquad'
+import { useState, useEffect } from 'react'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { useWalletNfts } from '@nfteyez/sol-rayz-react'
 import {
@@ -13,6 +14,17 @@ import {
     SvgIcon,
     Chip,
     ListItem,
+    Radio,
+    RadioGroup,
+    FormControlLabel,
+    FormControl,
+    FormLabel,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import {
@@ -20,21 +32,50 @@ import {
     MonetizationOnRounded,
     Numbers,
     AccessTimeFilledRounded,
+    SentimentNeutralRounded,
+    SentimentVerySatisfiedRounded,
+    SentimentVeryDissatisfiedRounded,
 } from '@mui/icons-material'
 import { parseISO, parse, format } from 'date-fns'
 import Linkify from 'react-linkify'
 
-export const ProjectDescription = ({ activeData }) => {
+export const ProjectDescription = ({
+    activeData,
+    onUpdateVote,
+    onDelete,
+    onEdit,
+    activeProjectKey,
+}) => {
     const theme = useTheme()
-
     console.log('activeData', activeData)
+    const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [vote, setVote] = useState('')
+
+    useEffect(() => {
+        onUpdateVote(vote)
+    }, [vote, onUpdateVote])
+
+    const handleVote = (event) => {
+        if (event.target.value === vote) {
+            setVote('')
+        } else {
+            setVote(event.target.value)
+        }
+    }
+    const handleEdit = () => {
+        onEdit(activeProjectKey)
+    }
+    const handleDelete = () => {
+        onDelete(activeProjectKey)
+        setIsDialogOpen(false)
+    }
     return (
         <Box>
             <Paper
                 elevation={2}
                 sx={{
                     padding: '12px',
-                    backgroundColor: theme.palette.background.main,
+                    backgroundColor: theme.palette.background.ultraLight,
                 }}
             >
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
@@ -68,15 +109,11 @@ export const ProjectDescription = ({ activeData }) => {
                     <IconButton
                         // variant="contained"
                         target="_blank"
-                        color="inherit"
                         aria-label="twitter"
                         href={`https://twitter.com/${activeData.twitter}`}
                         sx={{
                             marginLeft: 'auto',
-                            // '&:hover': {
-                            //     opacity: 0.4,
-                            //     backgroundColor: 'transparent',
-                            // },
+                            color: theme.palette.primary.dark,
                         }}
                     >
                         <Twitter />
@@ -84,15 +121,11 @@ export const ProjectDescription = ({ activeData }) => {
                     <IconButton
                         // variant="contained"
                         target="_blank"
-                        color="inherit"
                         aria-label="discord"
                         href={activeData.discord}
-                        // sx={{
-                        //     '&:hover': {
-                        //         opacity: 0.4,
-                        //         backgroundColor: 'transparent',
-                        //     },
-                        // }}
+                        sx={{
+                            color: theme.palette.primary.dark,
+                        }}
                     >
                         <SvgIcon>
                             <path
@@ -102,12 +135,196 @@ export const ProjectDescription = ({ activeData }) => {
                         </SvgIcon>
                     </IconButton>
                 </Box>
-                <Paper
-                    elevation={1}
-                    sx={{ padding: '16px', whiteSpace: 'pre-wrap' }}
+                <Box sx={{ display: 'flex' }}>
+                    <Paper
+                        elevation={1}
+                        sx={{
+                            padding: '16px',
+                            whiteSpace: 'pre-wrap',
+                            flexGrow: 8,
+                            marginRight: '12px',
+                            backgroundColor: theme.palette.background.main,
+                        }}
+                    >
+                        <Linkify>{activeData.overview}</Linkify>
+                    </Paper>
+                    <Paper
+                        elevation={1}
+                        sx={{
+                            padding: '16px',
+                            flexGrow: 1,
+                            backgroundColor: theme.palette.background.main,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+
+                            '& a:link': {
+                                color: 'green',
+                                backgroundColor: 'transparent',
+                                textDecoration: 'none',
+                            },
+                        }}
+                    >
+                        <FormControl component="fieldset">
+                            {/* <FormLabel component="legend">Gender</FormLabel> */}
+                            <RadioGroup
+                                aria-label="vote"
+                                defaultValue=""
+                                name="radio-buttons-group"
+                                value={vote}
+                            >
+                                <FormControlLabel
+                                    value="mint"
+                                    control={
+                                        <Radio
+                                            onClick={handleVote}
+                                            sx={{
+                                                '& .MuiSvgIcon-root': {
+                                                    fontSize: 48,
+                                                },
+                                                '&:hover': {
+                                                    // bgcolor: 'transparent',
+                                                },
+                                            }}
+                                            checkedIcon={
+                                                <SentimentVerySatisfiedRounded
+                                                    sx={{
+                                                        color: 'limegreen',
+                                                    }}
+                                                />
+                                            }
+                                            icon={
+                                                <SentimentVerySatisfiedRounded />
+                                            }
+                                        />
+                                    }
+                                    label={
+                                        Object.keys(
+                                            activeData?.votes?.mint || {}
+                                        ).length
+                                    }
+                                />
+                                <FormControlLabel
+                                    value="pass"
+                                    control={
+                                        <Radio
+                                            onClick={handleVote}
+                                            sx={{
+                                                '& .MuiSvgIcon-root': {
+                                                    fontSize: 48,
+                                                },
+                                                '&:hover': {
+                                                    // bgcolor: 'transparent',
+                                                },
+                                            }}
+                                            checkedIcon={
+                                                <SentimentNeutralRounded
+                                                    sx={{
+                                                        color: 'gold',
+                                                    }}
+                                                />
+                                            }
+                                            icon={<SentimentNeutralRounded />}
+                                        />
+                                    }
+                                    label={
+                                        Object.keys(
+                                            activeData?.votes?.pass || {}
+                                        ).length
+                                    }
+                                />
+                                <FormControlLabel
+                                    value="rug"
+                                    control={
+                                        <Radio
+                                            onClick={handleVote}
+                                            sx={{
+                                                '& .MuiSvgIcon-root': {
+                                                    fontSize: 48,
+                                                },
+                                                '&:hover': {
+                                                    // bgcolor: 'transparent',
+                                                },
+                                            }}
+                                            checkedIcon={
+                                                <SentimentVeryDissatisfiedRounded
+                                                    sx={{
+                                                        color: 'red',
+                                                    }}
+                                                />
+                                            }
+                                            icon={
+                                                <SentimentVeryDissatisfiedRounded />
+                                            }
+                                        />
+                                    }
+                                    label={
+                                        Object.keys(
+                                            activeData?.votes?.rug || {}
+                                        ).length
+                                    }
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </Paper>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginTop: '8px',
+                    }}
                 >
-                    <Linkify>{activeData.overview}</Linkify>
-                </Paper>
+                    <Button
+                        variant="contained"
+                        onClick={handleEdit}
+                        sx={{
+                            marginRight: '8px',
+                            backgroundColor: theme.palette.background.dark,
+                            '&:hover': {
+                                backgroundColor: theme.palette.background.light,
+                            },
+                        }}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={() => setIsDialogOpen(true)}
+                        sx={{
+                            backgroundColor: theme.palette.background.dark,
+                            '&:hover': {
+                                backgroundColor: theme.palette.background.light,
+                            },
+                        }}
+                    >
+                        Delete
+                    </Button>
+                </Box>
+                <Dialog
+                    open={isDialogOpen}
+                    onClose={() => setIsDialogOpen(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {'Are you sure you want to delete this project?'}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            This will remove the project from available projects
+                            to view and delete all votes.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setIsDialogOpen(false)}>
+                            Cancel
+                        </Button>
+                        <Button onClick={handleDelete} autoFocus>
+                            Confirm
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Paper>
         </Box>
     )

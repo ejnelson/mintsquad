@@ -54,13 +54,15 @@ export const Restricted = () => {
     const walletHasEditAccessToken = nfts?.some((nft) =>
         Object.values(editAccessTokenIds).includes(nft.mint)
     )
-
     return (
         <>
             {isLoading ? (
                 <LinearProgress />
             ) : walletHasValidNfts ? (
-                <MintSquad editAccess={walletHasEditAccessToken} />
+                <MintSquad
+                    editAccess={walletHasEditAccessToken}
+                    walletId={publicKey?.toString()}
+                />
             ) : (
                 <Box
                     sx={{

@@ -57,6 +57,7 @@ import { format, utcToZonedTime } from 'date-fns-tz'
 //     'AAAAAAAAAAAAAAAAAAAAAEgUXwEAAAAAlIXafDptLJqlcS3iqiIsRktthbw%3DLS3KKCTirevHGkD0kW7jQjpeItp93rJjrXxwZNsAHWCNl6fEw6'
 
 const herokuProxy = 'https://enigmatic-headland-40206.herokuapp.com/'
+const api = 'https://api.twitter.com/2/users/by/username/'
 
 // import { Client } from 'twitter.js'
 // // import { bearerToken } from './secrets.js';
@@ -142,49 +143,21 @@ const Drawer = styled(MuiDrawer, {
     }),
 }))
 
-export const MintSquad = ({ editAccess }) => {
-    const [isEditing, setIsEditing] = useState(null)
-    const [edits, setEdits] = useState({})
+export const MintSquad = ({ editAccess, walletId }) => {
     const [twitterPics, setTwitterPics] = useState({})
     const [activeProjectKey, setActiveProjectKey] = useState(null)
     const theme = useTheme()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [open, setOpen] = useState(false)
-    const api = 'https://api.twitter.com/2/users/by/username/'
-    console.log('process.env.TWITTER_API_KEY', process.env)
-    const config = {
-        headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_TWITTER_BEARER_TOKEN}`,
-        },
-        params: {
-            'user.fields': 'profile_image_url',
-        },
-    }
-
-    const handleDrawerOpen = () => {
-        setOpen(true)
-    }
-
-    const handleDrawerClose = () => {
-        setOpen(false)
-    }
     // Initialize Firebase
     const app = initializeApp(firebaseConfig)
-    const analytics = getAnalytics(app)
+    // const analytics = getAnalytics(app)
     const dbRef = ref(getDatabase(app))
-
     const [snapshots, loading, error] = useObject(dbRef)
-    const handleEdit = (key) => {
-        setEdits({
-            name: snapshots.val()[key].name,
-            price: snapshots.val()[key].price,
-            supply: snapshots.val()[key].supply,
-            discord: snapshots.val()[key].discord,
-            twitter: snapshots.val()[key].twitter,
-            overview: snapshots.val()[key].overview,
-        })
-        setIsEditing(key)
-    }
+    const activeData =
+        snapshots && !loading && activeProjectKey
+            ? snapshots.val()[activeProjectKey]
+            : null
 
     useEffect(() => {
         const getTwitterPics = async () => {
@@ -206,7 +179,6 @@ export const MintSquad = ({ editAccess }) => {
                             },
                         }
                     )
-                    console.log('token', access_token)
                     return axios.get(herokuProxy + api + values.twitter, {
                         headers: {
                             Authorization: `Bearer ${access_token}`,
@@ -229,46 +201,49 @@ export const MintSquad = ({ editAccess }) => {
         !loading && snapshots.val() && getTwitterPics()
     }, [loading, snapshots])
 
-    const handleSave = (key) => {
-        set(ref(getDatabase(), key), edits)
-        setIsEditing(null)
+    const handleUpdateVote = (vote) => {
+        console.log('vote', vote)
+        const voteOptions = ['mint', 'pass', 'rug']
+        console.log('activeData', activeData)
+        console.log('activeProjectKey', activeProjectKey)
+        console.log('walletid', walletId)
+        // dbRef.transaction((currentValue) => {
+        //     console.log('currentValue', currentValue)
+        // })
+        voteOptions.forEach((option) => {
+            if (option === vote) {
+                set(
+                    ref(
+                        getDatabase(),
+                        activeProjectKey + `/votes/${option}/${walletId}`
+                    ),
+                    true
+                )
+            } else {
+                remove(
+                    ref(
+                        getDatabase(),
+                        activeProjectKey + `/votes/${option}/${walletId}`
+                    )
+                )
+            }
+        })
     }
+    // const handleSave = (key) => {
+    //     set(ref(getDatabase(), key), edits)
+    // }
     const handleDelete = (key) => {
+        console.log('key', key)
         remove(ref(getDatabase(), key))
     }
+    const handleEdit = (key) => {}
+
     const handleAddProject = () => {
         setIsModalOpen(true)
-        // push(ref(getDatabase()), {
-        //     name: '',
-        //     price: '',
-        //     supply: '',
-        //     discord: '',
-        //     twitter: '',
-        //     overview: '',
-        // }).then((db) => {
-        //     console.log('ds', db)
-        //     get(db).then((snapshot) => {
-        //         console.log('yo', snapshot.key)
-        //         console.log('snapshot', snapshot.val())
-        //         setEdits({
-        //             name: '',
-        //             price: '',
-        //             supply: '',
-        //             discord: '',
-        //             twitter: '',
-        //             overview: '',
-        //         })
-        //         setIsEditing(snapshot.key)
-        //     })
-        // })
     }
     const handleCloseModal = () => {
         setIsModalOpen(false)
     }
-    const activeData =
-        snapshots && !loading && activeProjectKey
-            ? snapshots.val()[activeProjectKey]
-            : null
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -328,7 +303,9 @@ export const MintSquad = ({ editAccess }) => {
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
-                    onClick={handleDrawerOpen}
+                    onClick={() => {
+                        setOpen(true)
+                    }}
                     sx={{
                         marginTop: 'auto',
                         marginLeft: 'auto',
@@ -341,7 +318,9 @@ export const MintSquad = ({ editAccess }) => {
                     <ArrowForwardOutlined />
                 </IconButton>
                 <IconButton
-                    onClick={handleDrawerClose}
+                    onClick={() => {
+                        setOpen(false)
+                    }}
                     sx={{
                         marginLeft: 'auto',
                         marginTop: 'auto',
@@ -363,7 +342,13 @@ export const MintSquad = ({ editAccess }) => {
                 }}
             >
                 {!loading && activeData ? (
-                    <ProjectDescription activeData={activeData} />
+                    <ProjectDescription
+                        activeData={activeData}
+                        onUpdateVote={handleUpdateVote}
+                        activeProjectKey={activeProjectKey}
+                        onDelete={handleDelete}
+                        onEdit={handleEdit}
+                    />
                 ) : (
                     <Box
                         sx={{
