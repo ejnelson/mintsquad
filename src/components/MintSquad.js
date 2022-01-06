@@ -119,10 +119,8 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         snapshots && !loading && activeProjectKey
             ? snapshots.val()[activeProjectKey]
             : null
-    console.log('refrewsh', Object.keys(snapshots?.val() || {}).length)
     useEffect(() => {
         const getTwitterPics = async () => {
-            console.log('getting twitter pics')
             const promises = Object.keys(snapshots.val()).map(
                 async (key, i) => {
                     const values = snapshots.val()[key]
