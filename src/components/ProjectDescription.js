@@ -58,7 +58,6 @@ export const ProjectDescription = ({
     })
     useEffect(() => {
         Object.keys(activeData.votes).forEach((key) => {
-            console.log('key', key)
             if (Object.keys(activeData.votes[key]).includes(walletId)) {
                 setVote(key)
             } else {
