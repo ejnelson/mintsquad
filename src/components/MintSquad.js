@@ -199,7 +199,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
             })
         }
         !loading && snapshots.val() && getTwitterPics()
-    }, [loading, snapshots])
+    }, [snapshots?.val().length])
 
     const handleUpdateVote = (vote) => {
         const voteOptions = ['mint', 'pass', 'rug']
@@ -240,7 +240,6 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
     const handleCloseModal = () => {
         setIsModalOpen(false)
     }
-
     return (
         <Box sx={{ display: 'flex' }}>
             <AddProjectModal
@@ -352,6 +351,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                         onDelete={handleDelete}
                         onEdit={handleEdit}
                         hasEditAccess={hasEditAccess}
+                        walletId={walletId}
                     />
                 ) : (
                     <Box

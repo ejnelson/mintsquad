@@ -1,11 +1,4 @@
-import { MintSquad } from './MintSquad'
-import { useState, useEffect, useMemo } from 'react'
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-import { useWalletNfts } from '@nfteyez/sol-rayz-react'
-import {
-    WalletDisconnectButton,
-    WalletMultiButton,
-} from '@solana/wallet-adapter-react-ui'
+import { useState, useEffect } from 'react'
 import {
     Box,
     Paper,
@@ -13,12 +6,10 @@ import {
     IconButton,
     SvgIcon,
     Chip,
-    ListItem,
     Radio,
     RadioGroup,
     FormControlLabel,
     FormControl,
-    FormLabel,
     Button,
     Dialog,
     DialogTitle,
@@ -44,7 +35,6 @@ import {
     differenceInMinutes,
     differenceInSeconds,
     differenceInDays,
-    formatDistanceToNow,
 } from 'date-fns'
 import Linkify from 'react-linkify'
 
@@ -55,9 +45,9 @@ export const ProjectDescription = ({
     onEdit,
     activeProjectKey,
     hasEditAccess,
+    walletId,
 }) => {
     const theme = useTheme()
-    console.log('activeData', activeData)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [vote, setVote] = useState('')
     const [timer, setTimer] = useState({
@@ -66,10 +56,21 @@ export const ProjectDescription = ({
         minutes: 0,
         seconds: 0,
     })
+    useEffect(() => {
+        Object.keys(activeData.votes).forEach((key) => {
+            console.log('key', key)
+            if (Object.keys(activeData.votes[key]).includes(walletId)) {
+                setVote(key)
+            } else {
+                setVote('')
+            }
+        })
+    }, [activeProjectKey])
 
     useEffect(() => {
         onUpdateVote(vote)
-    }, [vote, onUpdateVote])
+    }, [vote])
+
     useEffect(() => {
         let myInterval = setInterval(() => {
             if (
@@ -151,7 +152,6 @@ export const ProjectDescription = ({
         return { days, hours, minutes, seconds }
     }
 
-    console.log('timer', timer)
     return (
         <Box>
             <Paper
