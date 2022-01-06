@@ -60,7 +60,7 @@ export const Restricted = () => {
                 <LinearProgress />
             ) : walletHasValidNfts ? (
                 <MintSquad
-                    editAccess={walletHasEditAccessToken}
+                    hasEditAccess={walletHasEditAccessToken}
                     walletId={publicKey?.toString()}
                 />
             ) : (

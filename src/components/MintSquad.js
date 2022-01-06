@@ -143,7 +143,7 @@ const Drawer = styled(MuiDrawer, {
     }),
 }))
 
-export const MintSquad = ({ editAccess, walletId }) => {
+export const MintSquad = ({ hasEditAccess, walletId }) => {
     const [twitterPics, setTwitterPics] = useState({})
     const [activeProjectKey, setActiveProjectKey] = useState(null)
     const theme = useTheme()
@@ -202,11 +202,7 @@ export const MintSquad = ({ editAccess, walletId }) => {
     }, [loading, snapshots])
 
     const handleUpdateVote = (vote) => {
-        console.log('vote', vote)
         const voteOptions = ['mint', 'pass', 'rug']
-        console.log('activeData', activeData)
-        console.log('activeProjectKey', activeProjectKey)
-        console.log('walletid', walletId)
         // dbRef.transaction((currentValue) => {
         //     console.log('currentValue', currentValue)
         // })
@@ -256,7 +252,7 @@ export const MintSquad = ({ editAccess, walletId }) => {
                 <DrawerHeader />
 
                 <List>
-                    {editAccess && (
+                    {hasEditAccess && (
                         <>
                             <ListItemButton onClick={handleAddProject}>
                                 <ListItemIcon>
@@ -285,6 +281,13 @@ export const MintSquad = ({ editAccess, walletId }) => {
                                     key={i}
                                     onClick={() => setActiveProjectKey(key)}
                                     selected={key === activeProjectKey}
+                                    sx={{
+                                        '&.Mui-selected': {
+                                            backgroundColor:
+                                                theme.palette.background
+                                                    .mediumDark,
+                                        },
+                                    }}
                                 >
                                     <ListItemAvatar alt="project name" src="">
                                         <Avatar
@@ -348,6 +351,7 @@ export const MintSquad = ({ editAccess, walletId }) => {
                         activeProjectKey={activeProjectKey}
                         onDelete={handleDelete}
                         onEdit={handleEdit}
+                        hasEditAccess={hasEditAccess}
                     />
                 ) : (
                     <Box

@@ -1,5 +1,5 @@
 import { MintSquad } from './MintSquad'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { useWalletNfts } from '@nfteyez/sol-rayz-react'
 import {
@@ -36,7 +36,16 @@ import {
     SentimentVerySatisfiedRounded,
     SentimentVeryDissatisfiedRounded,
 } from '@mui/icons-material'
-import { parseISO, parse, format } from 'date-fns'
+import {
+    parseISO,
+    parse,
+    format,
+    differenceInHours,
+    differenceInMinutes,
+    differenceInSeconds,
+    differenceInDays,
+    formatDistanceToNow,
+} from 'date-fns'
 import Linkify from 'react-linkify'
 
 export const ProjectDescription = ({
@@ -45,15 +54,42 @@ export const ProjectDescription = ({
     onDelete,
     onEdit,
     activeProjectKey,
+    hasEditAccess,
 }) => {
     const theme = useTheme()
     console.log('activeData', activeData)
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [vote, setVote] = useState('')
+    const [timer, setTimer] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    })
 
     useEffect(() => {
         onUpdateVote(vote)
     }, [vote, onUpdateVote])
+    useEffect(() => {
+        let myInterval = setInterval(() => {
+            if (
+                (((timer.days === timer.minutes) === timer.seconds) ===
+                    timer.hours) ===
+                0
+            ) {
+                clearInterval(myInterval)
+            } else {
+                setTimer(timeUntilMint)
+            }
+        }, 1000)
+        return () => {
+            clearInterval(myInterval)
+        }
+    })
+
+    useEffect(() => {
+        setTimer(timeUntilMint)
+    }, [activeData.mintTime])
 
     const handleVote = (event) => {
         if (event.target.value === vote) {
@@ -69,6 +105,53 @@ export const ProjectDescription = ({
         onDelete(activeProjectKey)
         setIsDialogOpen(false)
     }
+    const timeUntilMint = () => {
+        const days = differenceInDays(
+            parseISO(
+                activeData.mintDate,
+                "yyyy-MM-dd'T'HH:mm:ss'Z",
+                new Date()
+            ),
+            new Date()
+        )
+        const hours =
+            differenceInHours(
+                parseISO(
+                    activeData.mintDate,
+                    "yyyy-MM-dd'T'HH:mm:ss'Z",
+                    new Date()
+                ),
+                new Date()
+            ) -
+            days * 24
+        const minutes =
+            differenceInMinutes(
+                parseISO(
+                    activeData.mintDate,
+                    "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                    new Date()
+                ),
+                new Date()
+            ) -
+            hours * 60 -
+            days * 24 * 60
+        const seconds =
+            differenceInSeconds(
+                parseISO(
+                    activeData.mintDate,
+                    "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                    new Date()
+                ),
+                new Date()
+            ) -
+            minutes * 60 -
+            hours * 60 * 60 -
+            days * 24 * 60 * 60
+
+        return { days, hours, minutes, seconds }
+    }
+
+    console.log('timer', timer)
     return (
         <Box>
             <Paper
@@ -80,19 +163,16 @@ export const ProjectDescription = ({
             >
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <Typography variant="h2">{activeData.name}</Typography>
-
                     <Chip
                         icon={<MonetizationOnRounded />}
                         label={activeData.price}
                         sx={{ marginLeft: '8px' }}
                     />
-
                     <Chip
                         icon={<Numbers />}
                         label={activeData.supply}
                         sx={{ marginLeft: '8px' }}
                     />
-
                     <Chip
                         icon={<AccessTimeFilledRounded />}
                         label={format(
@@ -105,7 +185,12 @@ export const ProjectDescription = ({
                         )}
                         sx={{ marginLeft: '8px' }}
                     />
-
+                    <Chip
+                        icon={<AccessTimeFilledRounded />}
+                        label={`Count down to mint:
+                        ${timer.days} : ${timer.hours} : ${timer.minutes} : ${timer.seconds}`}
+                        sx={{ marginLeft: '8px' }}
+                    />
                     <IconButton
                         // variant="contained"
                         target="_blank"
@@ -141,7 +226,7 @@ export const ProjectDescription = ({
                         sx={{
                             padding: '16px',
                             whiteSpace: 'pre-wrap',
-                            flexGrow: 8,
+                            flexGrow: 1,
                             marginRight: '12px',
                             backgroundColor: theme.palette.background.main,
                         }}
@@ -152,7 +237,7 @@ export const ProjectDescription = ({
                         elevation={1}
                         sx={{
                             padding: '16px',
-                            flexGrow: 1,
+                            width: '150px',
                             backgroundColor: theme.palette.background.main,
                             display: 'flex',
                             justifyContent: 'center',
@@ -268,14 +353,16 @@ export const ProjectDescription = ({
                         </FormControl>
                     </Paper>
                 </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        marginTop: '8px',
-                    }}
-                >
-                    <Button
+                {hasEditAccess && (
+                    <>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                                marginTop: '8px',
+                            }}
+                        >
+                            {/* <Button
                         variant="contained"
                         onClick={handleEdit}
                         sx={{
@@ -287,44 +374,50 @@ export const ProjectDescription = ({
                         }}
                     >
                         Edit
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={() => setIsDialogOpen(true)}
-                        sx={{
-                            backgroundColor: theme.palette.background.dark,
-                            '&:hover': {
-                                backgroundColor: theme.palette.background.light,
-                            },
-                        }}
-                    >
-                        Delete
-                    </Button>
-                </Box>
-                <Dialog
-                    open={isDialogOpen}
-                    onClose={() => setIsDialogOpen(false)}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">
-                        {'Are you sure you want to delete this project?'}
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            This will remove the project from available projects
-                            to view and delete all votes.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => setIsDialogOpen(false)}>
-                            Cancel
-                        </Button>
-                        <Button onClick={handleDelete} autoFocus>
-                            Confirm
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                    </Button> */}
+                            <Button
+                                variant="contained"
+                                onClick={() => setIsDialogOpen(true)}
+                                sx={{
+                                    backgroundColor:
+                                        theme.palette.background.dark,
+                                    '&:hover': {
+                                        backgroundColor:
+                                            theme.palette.background.light,
+                                    },
+                                }}
+                            >
+                                Delete
+                            </Button>
+                        </Box>
+                        <Dialog
+                            open={isDialogOpen}
+                            onClose={() => setIsDialogOpen(false)}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">
+                                {
+                                    'Are you sure you want to delete this project?'
+                                }
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    This will remove the project from available
+                                    projects to view and delete all votes.
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => setIsDialogOpen(false)}>
+                                    Cancel
+                                </Button>
+                                <Button onClick={handleDelete} autoFocus>
+                                    Confirm
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </>
+                )}
             </Paper>
         </Box>
     )

@@ -22,6 +22,7 @@ export const background = {
     main: '#FFF',
     light: '#9E76DA',
     dark: '#391085',
+    mediumDark: '#7940b5',
     ultraLight: '#F7F7F7',
     exclude: '#EEE5F6',
 }
