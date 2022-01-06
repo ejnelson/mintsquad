@@ -1,18 +1,7 @@
-import {
-    ref,
-    getDatabase,
-    set,
-    onValue,
-    get,
-    child,
-    remove,
-    push,
-} from 'firebase/database'
+import { ref, getDatabase, set, get, remove, push } from 'firebase/database'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
-import { getAnalytics } from 'firebase/analytics'
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite'
-import { useList, useObject } from 'react-firebase-hooks/database'
+import { useObject } from 'react-firebase-hooks/database'
 import { useState, useEffect } from 'react'
 
 import { styled, useTheme } from '@mui/material/styles'
@@ -20,14 +9,10 @@ import {
     Avatar,
     Box,
     Drawer as MuiDrawer,
-    AppBar as MuiAppBar,
-    Toolbar,
     List,
-    CssBaseline,
     Typography,
     Divider,
     IconButton,
-    ListItem,
     ListItemIcon,
     ListItemText,
     TextField,
@@ -38,9 +23,6 @@ import {
     Paper,
 } from '@mui/material'
 import {
-    InboxIcon,
-    MailIcon,
-    TwitterIcon,
     ArrowForwardOutlined,
     ArrowBackOutlined,
     AddCircleOutlined,
@@ -48,44 +30,23 @@ import {
 import { DateTimePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 
-import { Restricted } from './Restricted'
 import axios from 'axios'
 import { ProjectDescription } from './ProjectDescription'
-import { parseISO, parse } from 'date-fns'
-import { format, utcToZonedTime } from 'date-fns-tz'
-// const bearerToken =
-//     'AAAAAAAAAAAAAAAAAAAAAEgUXwEAAAAAlIXafDptLJqlcS3iqiIsRktthbw%3DLS3KKCTirevHGkD0kW7jQjpeItp93rJjrXxwZNsAHWCNl6fEw6'
+import { parse } from 'date-fns'
+import { format } from 'date-fns-tz'
 
 const herokuProxy = 'https://enigmatic-headland-40206.herokuapp.com/'
 const api = 'https://api.twitter.com/2/users/by/username/'
 
-// import { Client } from 'twitter.js'
-// // import { bearerToken } from './secrets.js';
-
-// const client = new Client()
-// client.on('ready', async () => {
-//     const user = await client.users.fetchByUsername({
-//         username: 'ejnelson',
-//     })
-//     console.log(user.description) // Contributing to open-source 🌐
-// })
-
-// client.loginWithBearerToken(bearerToken)
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: 'AIzaSyBklylM4QBZ-ojEendzvCok-gMmWphxsxA',
-    authDomain: 'mintsquad-73744.firebaseapp.com',
-    databaseURL: 'https://mintsquad-73744-default-rtdb.firebaseio.com',
-    projectId: 'mintsquad-73744',
-    storageBucket: 'mintsquad-73744.appspot.com',
-    messagingSenderId: '232717445616',
-    appId: '1:232717445616:web:fb94bad08a20e7d0181535',
-    measurementId: 'G-DEV1VWL13L',
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 }
 
 const drawerWidth = 240
@@ -158,9 +119,10 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         snapshots && !loading && activeProjectKey
             ? snapshots.val()[activeProjectKey]
             : null
-
+    console.log('refrewsh', Object.keys(snapshots?.val() || {}).length)
     useEffect(() => {
         const getTwitterPics = async () => {
+            console.log('getting twitter pics')
             const promises = Object.keys(snapshots.val()).map(
                 async (key, i) => {
                     const values = snapshots.val()[key]
@@ -199,7 +161,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
             })
         }
         !loading && snapshots.val() && getTwitterPics()
-    }, [snapshots?.val().length])
+    }, [Object.keys(snapshots?.val() || {}).length])
 
     const handleUpdateVote = (vote) => {
         const voteOptions = ['mint', 'pass', 'rug']
