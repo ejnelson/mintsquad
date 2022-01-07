@@ -63,17 +63,15 @@ export const ProjectDescription = ({
     useEffect(() => {
         activeData?.votes &&
             Object.keys(activeData?.votes).forEach((key) => {
+                console.log('key', key)
+                console.log('walletId', walletId)
+                console.log('activeData.votes[key]', activeData.votes[key])
                 if (Object.keys(activeData.votes[key]).includes(walletId)) {
+                    console.log('seting vote', key)
                     setVote(key)
-                } else {
-                    setVote('')
                 }
             })
     }, [activeProjectKey])
-
-    useEffect(() => {
-        onUpdateVote(vote)
-    }, [vote])
 
     useEffect(() => {
         let myInterval = setInterval(() => {
@@ -97,10 +95,13 @@ export const ProjectDescription = ({
     }, [activeData.mintTime])
 
     const handleVote = (event) => {
+        console.log('why is this happening')
         if (event.target.value === vote) {
             setVote('')
+            onUpdateVote('')
         } else {
             setVote(event.target.value)
+            onUpdateVote(event.target.value)
         }
     }
     const handleEdit = () => {
@@ -155,6 +156,7 @@ export const ProjectDescription = ({
 
         return { days, hours, minutes, seconds }
     }
+    console.log('vote to display', vote)
     return (
         <Box>
             <Paper
