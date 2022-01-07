@@ -38,6 +38,7 @@ const editAccessTokenIds = {
     rugnick: 'LHfKguKZwpCQgTZZZzQAGGqUP9f9a2knFYSU586Yd58',
     ryu: '37SZircdDb6jq2RFXuT3D4qNobBpSo2rZrggkUVonQDg',
     hfp: 'EXSqmmf3Pciy7V99jJinrqpwaJgQiGwGFa4JpPhJAvvB',
+    sainteclectic: '41AFMwegGhpT6jtWMyc4uHpggfHFoiPcx9aEoP8kGZcY',
 }
 export const Restricted = () => {
     const { wallet } = useWallet()
