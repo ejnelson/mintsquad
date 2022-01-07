@@ -61,12 +61,13 @@ export const ProjectDescription = ({
         seconds: 0,
     })
     useEffect(() => {
-        activeData?.votes &&
-            Object.keys(activeData?.votes).forEach((key) => {
-                if (Object.keys(activeData.votes[key]).includes(walletId)) {
-                    setVote(key)
-                }
-            })
+        activeData?.votes
+            ? Object.keys(activeData?.votes).forEach((key) => {
+                  if (Object.keys(activeData.votes[key]).includes(walletId)) {
+                      setVote(key)
+                  }
+              })
+            : setVote('')
     }, [activeProjectKey])
 
     useEffect(() => {

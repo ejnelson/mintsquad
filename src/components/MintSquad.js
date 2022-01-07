@@ -194,7 +194,6 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         remove(ref(getDatabase(), key))
     }
     const handleEdit = (key) => {
-        console.log('editing project', key)
         setIsModalOpen(true)
         setProjectToEdit(activeData)
     }
