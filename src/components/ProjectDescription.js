@@ -16,6 +16,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    Tooltip,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import {
@@ -261,27 +262,32 @@ export const ProjectDescription = ({
                                 <FormControlLabel
                                     value="mint"
                                     control={
-                                        <Radio
-                                            onClick={handleVote}
-                                            sx={{
-                                                '& .MuiSvgIcon-root': {
-                                                    fontSize: 48,
-                                                },
-                                                '&:hover': {
-                                                    // bgcolor: 'transparent',
-                                                },
-                                            }}
-                                            checkedIcon={
-                                                <SentimentVerySatisfiedRounded
-                                                    sx={{
-                                                        color: 'limegreen',
-                                                    }}
-                                                />
-                                            }
-                                            icon={
-                                                <SentimentVerySatisfiedRounded />
-                                            }
-                                        />
+                                        <Tooltip
+                                            title="I will mint this"
+                                            placement="left"
+                                        >
+                                            <Radio
+                                                onClick={handleVote}
+                                                sx={{
+                                                    '& .MuiSvgIcon-root': {
+                                                        fontSize: 48,
+                                                    },
+                                                    '&:hover': {
+                                                        // bgcolor: 'transparent',
+                                                    },
+                                                }}
+                                                checkedIcon={
+                                                    <SentimentVerySatisfiedRounded
+                                                        sx={{
+                                                            color: 'limegreen',
+                                                        }}
+                                                    />
+                                                }
+                                                icon={
+                                                    <SentimentVerySatisfiedRounded />
+                                                }
+                                            />
+                                        </Tooltip>
                                     }
                                     label={
                                         Object.keys(
@@ -292,25 +298,32 @@ export const ProjectDescription = ({
                                 <FormControlLabel
                                     value="pass"
                                     control={
-                                        <Radio
-                                            onClick={handleVote}
-                                            sx={{
-                                                '& .MuiSvgIcon-root': {
-                                                    fontSize: 48,
-                                                },
-                                                '&:hover': {
-                                                    // bgcolor: 'transparent',
-                                                },
-                                            }}
-                                            checkedIcon={
-                                                <SentimentNeutralRounded
-                                                    sx={{
-                                                        color: 'gold',
-                                                    }}
-                                                />
-                                            }
-                                            icon={<SentimentNeutralRounded />}
-                                        />
+                                        <Tooltip
+                                            title="I'm indifferent/won't mint"
+                                            placement="left"
+                                        >
+                                            <Radio
+                                                onClick={handleVote}
+                                                sx={{
+                                                    '& .MuiSvgIcon-root': {
+                                                        fontSize: 48,
+                                                    },
+                                                    '&:hover': {
+                                                        // bgcolor: 'transparent',
+                                                    },
+                                                }}
+                                                checkedIcon={
+                                                    <SentimentNeutralRounded
+                                                        sx={{
+                                                            color: 'gold',
+                                                        }}
+                                                    />
+                                                }
+                                                icon={
+                                                    <SentimentNeutralRounded />
+                                                }
+                                            />
+                                        </Tooltip>
                                     }
                                     label={
                                         Object.keys(
@@ -321,27 +334,32 @@ export const ProjectDescription = ({
                                 <FormControlLabel
                                     value="rug"
                                     control={
-                                        <Radio
-                                            onClick={handleVote}
-                                            sx={{
-                                                '& .MuiSvgIcon-root': {
-                                                    fontSize: 48,
-                                                },
-                                                '&:hover': {
-                                                    // bgcolor: 'transparent',
-                                                },
-                                            }}
-                                            checkedIcon={
-                                                <SentimentVeryDissatisfiedRounded
-                                                    sx={{
-                                                        color: 'red',
-                                                    }}
-                                                />
-                                            }
-                                            icon={
-                                                <SentimentVeryDissatisfiedRounded />
-                                            }
-                                        />
+                                        <Tooltip
+                                            title="This might be a rug"
+                                            placement="left"
+                                        >
+                                            <Radio
+                                                onClick={handleVote}
+                                                sx={{
+                                                    '& .MuiSvgIcon-root': {
+                                                        fontSize: 48,
+                                                    },
+                                                    '&:hover': {
+                                                        // bgcolor: 'transparent',
+                                                    },
+                                                }}
+                                                checkedIcon={
+                                                    <SentimentVeryDissatisfiedRounded
+                                                        sx={{
+                                                            color: 'red',
+                                                        }}
+                                                    />
+                                                }
+                                                icon={
+                                                    <SentimentVeryDissatisfiedRounded />
+                                                }
+                                            />
+                                        </Tooltip>
                                     }
                                     label={
                                         Object.keys(
