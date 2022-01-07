@@ -157,6 +157,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
     //                 twitterPicObject[key] =
     //                     res[i].data.data?.profile_image_url || null
     //             })
+    //             console.log('pics', twitterPicObject)
     //             setTwitterPics(twitterPicObject)
     //         })
     //     }
@@ -258,8 +259,8 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                                 >
                                     <ListItemAvatar alt="project name" src="">
                                         <Avatar
-                                            alt="Project"
-                                            src={twitterPics[key]}
+                                            alt={values.name}
+                                            src={values.twitterIcon}
                                         />
                                     </ListItemAvatar>
                                     <ListItemText
