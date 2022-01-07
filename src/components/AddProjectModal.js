@@ -61,7 +61,6 @@ export const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
     const handleChange = (key) => (input) => {
         if (key === 'mintDate') {
             const dateAsUtc = format(input, "yyyy-MM-dd'T'HH:mm:ss") + 'Z'
-
             setValues({ ...values, [key]: dateAsUtc })
         } else {
             setValues({ ...values, [key]: input.target.value })

@@ -17,6 +17,7 @@ import {
     DialogContentText,
     DialogActions,
     Tooltip,
+    Link,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import {
@@ -27,6 +28,8 @@ import {
     SentimentNeutralRounded,
     SentimentVerySatisfiedRounded,
     SentimentVeryDissatisfiedRounded,
+    CheckCircleRounded,
+    LanguageRounded,
 } from '@mui/icons-material'
 import {
     parseISO,
@@ -81,7 +84,7 @@ export const ProjectDescription = ({
             ) {
                 clearInterval(myInterval)
             } else {
-                setTimer(timeUntilMint)
+                setTimer(timeUntilMint())
             }
         }, 1000)
         return () => {
@@ -90,7 +93,7 @@ export const ProjectDescription = ({
     })
 
     useEffect(() => {
-        setTimer(timeUntilMint)
+        setTimer(timeUntilMint())
     }, [activeData.mintTime])
 
     const handleVote = (event) => {
@@ -152,7 +155,6 @@ export const ProjectDescription = ({
 
         return { days, hours, minutes, seconds }
     }
-
     return (
         <Box>
             <Paper
@@ -192,13 +194,25 @@ export const ProjectDescription = ({
                         ${timer.days} : ${timer.hours} : ${timer.minutes} : ${timer.seconds}`}
                         sx={{ marginLeft: '8px' }}
                     />
+
+                    <IconButton
+                        // variant="contained"
+                        target="_blank"
+                        aria-label="website"
+                        href={activeData.website}
+                        sx={{
+                            marginLeft: 'auto',
+                            color: theme.palette.primary.dark,
+                        }}
+                    >
+                        <LanguageRounded />
+                    </IconButton>
                     <IconButton
                         // variant="contained"
                         target="_blank"
                         aria-label="twitter"
                         href={`https://twitter.com/${activeData.twitter}`}
                         sx={{
-                            marginLeft: 'auto',
                             color: theme.palette.primary.dark,
                         }}
                     >
@@ -230,9 +244,28 @@ export const ProjectDescription = ({
                             flexGrow: 1,
                             marginRight: '12px',
                             backgroundColor: theme.palette.background.main,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
                         }}
                     >
                         <Linkify>{activeData.overview}</Linkify>
+                        {activeData.whiteListForm && (
+                            <Box sx={{ marginTop: '8px' }}>
+                                WhiteList:
+                                <Link
+                                    href={activeData.whiteListForm}
+                                    underline="hover"
+                                    sx={{
+                                        marginLeft: 'auto',
+                                        color: theme.palette.primary.dark,
+                                    }}
+                                >
+                                    {' '}
+                                    {activeData.whiteListForm}
+                                </Link>
+                            </Box>
+                        )}
                     </Paper>
                     <Paper
                         elevation={1}
@@ -439,32 +472,4 @@ export const ProjectDescription = ({
             </Paper>
         </Box>
     )
-}
-
-{
-    /* {editAccess && (
-                                    <>
-                                        {disabled ? (
-                                            <Button
-                                                onClick={() => handleEdit(key)}
-                                                variant="contained"
-                                            >
-                                                Edit
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                onClick={() => handleSave(key)}
-                                                variant="contained"
-                                            >
-                                                Save
-                                            </Button>
-                                        )}
-                                        <Button
-                                            onClick={() => handleDelete(key)}
-                                            variant="contained"
-                                        >
-                                            Delete Project
-                                        </Button>
-                                    </>
-                                )} */
 }
