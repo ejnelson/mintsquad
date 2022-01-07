@@ -76,8 +76,15 @@ export const postToDiscord = async (values) => {
         ],
     }
 
+    //test channel
     const res = await axios.post(
         'https://discord.com/api/webhooks/928706416393453648/2UZB6ABbDuokfM29FHf2pae-ZeHur08-7FzYAZkeUyZs-E77iTJTUgIF9eXHR84BndbP',
+        payload
+    )
+
+    //announcemints
+    const res2 = await axios.post(
+        'https://discord.com/api/webhooks/928375457999630366/3QBNQf9QGtw2sp5jbS3RMMHaVxqmuDirXTG8fNBLW3OBKspKYDdcMRK67L4Z4Lwh-cpw',
         payload
     )
     return res
