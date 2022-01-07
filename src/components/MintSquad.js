@@ -163,7 +163,6 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
 
     const handleUpdateVote = (vote) => {
         const voteOptions = ['mint', 'pass', 'rug']
-        console.log('parent vote', vote)
         // dbRef.transaction((currentValue) => {
         //     console.log('currentValue', currentValue)
         // })
