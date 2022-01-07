@@ -121,47 +121,47 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         snapshots && !loading && activeProjectKey
             ? snapshots.val()[activeProjectKey]
             : null
-    useEffect(() => {
-        const getTwitterPics = async () => {
-            const promises = Object.keys(snapshots.val()).map(
-                async (key, i) => {
-                    const values = snapshots.val()[key]
-                    const {
-                        data: { access_token },
-                    } = await axios.post(
-                        herokuProxy +
-                            'https://api.twitter.com/oauth2/token?grant_type=client_credentials',
-                        {},
-                        {
-                            auth: {
-                                username: process.env.REACT_APP_TWITTER_API_KEY,
-                                password:
-                                    process.env
-                                        .REACT_APP_TWITTER_API_KEY_SECRET,
-                            },
-                        }
-                    )
-                    return axios.get(herokuProxy + api + values.twitter, {
-                        headers: {
-                            Authorization: `Bearer ${access_token}`,
-                        },
-                        params: {
-                            'user.fields': 'profile_image_url',
-                        },
-                    })
-                }
-            )
-            await Promise.all(promises).then((res) => {
-                let twitterPicObject = {}
-                Object.keys(snapshots.val()).forEach((key, i) => {
-                    twitterPicObject[key] =
-                        res[i].data.data?.profile_image_url || null
-                })
-                setTwitterPics(twitterPicObject)
-            })
-        }
-        !loading && snapshots.val() && getTwitterPics()
-    }, [Object.keys(snapshots?.val() || {}).length])
+    // useEffect(() => {
+    //     const getTwitterPics = async () => {
+    //         const promises = Object.keys(snapshots.val()).map(
+    //             async (key, i) => {
+    //                 const values = snapshots.val()[key]
+    //                 const {
+    //                     data: { access_token },
+    //                 } = await axios.post(
+    //                     herokuProxy +
+    //                         'https://api.twitter.com/oauth2/token?grant_type=client_credentials',
+    //                     {},
+    //                     {
+    //                         auth: {
+    //                             username: process.env.REACT_APP_TWITTER_API_KEY,
+    //                             password:
+    //                                 process.env
+    //                                     .REACT_APP_TWITTER_API_KEY_SECRET,
+    //                         },
+    //                     }
+    //                 )
+    //                 return axios.get(herokuProxy + api + values.twitter, {
+    //                     headers: {
+    //                         Authorization: `Bearer ${access_token}`,
+    //                     },
+    //                     params: {
+    //                         'user.fields': 'profile_image_url',
+    //                     },
+    //                 })
+    //             }
+    //         )
+    //         await Promise.all(promises).then((res) => {
+    //             let twitterPicObject = {}
+    //             Object.keys(snapshots.val()).forEach((key, i) => {
+    //                 twitterPicObject[key] =
+    //                     res[i].data.data?.profile_image_url || null
+    //             })
+    //             setTwitterPics(twitterPicObject)
+    //         })
+    //     }
+    //     !loading && snapshots.val() && getTwitterPics()
+    // }, [Object.keys(snapshots?.val() || {}).length])
 
     const handleUpdateVote = (vote) => {
         const voteOptions = ['mint', 'pass', 'rug']
