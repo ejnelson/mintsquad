@@ -110,6 +110,8 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
     const theme = useTheme()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [open, setOpen] = useState(false)
+    const [projectToEdit, setProjectToEdit] = useState(null)
+
     // Initialize Firebase
     const app = initializeApp(firebaseConfig)
     // const analytics = getAnalytics(app)
@@ -191,20 +193,27 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
     const handleDelete = (key) => {
         remove(ref(getDatabase(), key))
     }
-    const handleEdit = (key) => {}
+    const handleEdit = (key) => {
+        console.log('editing project', key)
+        setIsModalOpen(true)
+        setProjectToEdit(activeData)
+    }
 
     const handleAddProject = () => {
         setIsModalOpen(true)
     }
     const handleCloseModal = () => {
+        setProjectToEdit(null)
         setIsModalOpen(false)
     }
 
     return (
         <Box sx={{ display: 'flex' }}>
             <AddProjectModal
+                projectToEdit={projectToEdit}
                 isModalOpen={isModalOpen}
                 onCloseModal={handleCloseModal}
+                activeProjectKey={activeProjectKey}
             />
 
             <Drawer variant="permanent" open={open}>

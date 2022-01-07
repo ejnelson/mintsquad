@@ -50,12 +50,26 @@ const initialState = {
     mintDate: format(new Date(), "yyyy-MM-dd'T'H:mm:ss") + 'Z',
 }
 
-export const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
+export const AddProjectModal = ({
+    activeProjectKey,
+    onCloseModal,
+    isModalOpen,
+    projectToEdit,
+}) => {
     const [values, setValues] = useState(initialState)
+    console.log('edit values', values)
+    console.log('proejct editin', projectToEdit)
     const [isPostingToDiscord, setIsPostingToDiscord] = useState(true)
+
+    useEffect(() => {
+        if (projectToEdit) {
+            setValues(projectToEdit)
+        }
+    }, [projectToEdit])
     const handleSendDiscordHook = async () => {
         const response = await postToDiscord(values)
     }
+
     const handleChange = (key) => (input) => {
         if (key === 'mintDate') {
             const dateAsUtc = format(input, "yyyy-MM-dd'T'HH:mm:ss") + 'Z'
@@ -69,15 +83,20 @@ export const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
         onCloseModal()
     }
     const handleSave = () => {
-        push(ref(getDatabase()), {
-            ...values,
-            mintDate: values.mintDate.toString(),
-        }).then((db) => {
-            get(db).then((snapshot) => {
-                setValues(initialState)
+        if (projectToEdit) {
+            set(ref(getDatabase(), activeProjectKey), values)
+        } else {
+            push(ref(getDatabase()), {
+                ...values,
+                mintDate: values.mintDate.toString(),
+            }).then((db) => {
+                get(db).then((snapshot) => {
+                    setValues(initialState)
+                })
             })
-        })
-        handleSendDiscordHook()
+            isPostingToDiscord && handleSendDiscordHook()
+        }
+        setValues(initialState)
         onCloseModal()
     }
     const style = {

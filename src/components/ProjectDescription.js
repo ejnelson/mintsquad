@@ -409,19 +409,21 @@ export const ProjectDescription = ({
                                 marginTop: '8px',
                             }}
                         >
-                            {/* <Button
-                        variant="contained"
-                        onClick={handleEdit}
-                        sx={{
-                            marginRight: '8px',
-                            backgroundColor: theme.palette.background.dark,
-                            '&:hover': {
-                                backgroundColor: theme.palette.background.light,
-                            },
-                        }}
-                    >
-                        Edit
-                    </Button> */}
+                            <Button
+                                variant="contained"
+                                onClick={handleEdit}
+                                sx={{
+                                    marginRight: '8px',
+                                    backgroundColor:
+                                        theme.palette.background.dark,
+                                    '&:hover': {
+                                        backgroundColor:
+                                            theme.palette.background.light,
+                                    },
+                                }}
+                            >
+                                Edit
+                            </Button>
                             <Button
                                 variant="contained"
                                 onClick={() => setIsDialogOpen(true)}
