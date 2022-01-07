@@ -55,8 +55,6 @@ export const AddProjectModal = ({ onCloseModal, isModalOpen }) => {
     const [isPostingToDiscord, setIsPostingToDiscord] = useState(true)
     const handleSendDiscordHook = async () => {
         const response = await postToDiscord(values)
-
-        console.log('response', response)
     }
     const handleChange = (key) => (input) => {
         if (key === 'mintDate') {

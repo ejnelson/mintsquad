@@ -189,7 +189,6 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
     //     set(ref(getDatabase(), key), edits)
     // }
     const handleDelete = (key) => {
-        console.log('key', key)
         remove(ref(getDatabase(), key))
     }
     const handleEdit = (key) => {}

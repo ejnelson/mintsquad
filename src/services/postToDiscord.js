@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 export const postToDiscord = async (values) => {
-    console.log('active data to send', values)
     const {
         squadLeader,
         discord,
