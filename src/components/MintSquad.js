@@ -171,6 +171,9 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         setIsModalOpen(false)
     }
 
+    const handleActivateNewProject = (newProjectKey) => {
+        setActiveProjectKey(newProjectKey)
+    }
     return (
         <Box sx={{ display: 'flex' }}>
             <AddProjectModal
@@ -178,6 +181,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                 isModalOpen={isModalOpen}
                 onCloseModal={handleCloseModal}
                 activeProjectKey={activeProjectKey}
+                onActivateNewProject={handleActivateNewProject}
             />
 
             <Drawer variant="permanent" open={open}>

@@ -1,43 +1,27 @@
-import { ref, getDatabase, set, get, remove, push } from 'firebase/database'
+import { ref, getDatabase, set, get, push } from 'firebase/database'
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app'
-import { useObject } from 'react-firebase-hooks/database'
 import { useState, useEffect } from 'react'
 
-import { styled, useTheme } from '@mui/material/styles'
 import {
-    Avatar,
     Box,
-    Drawer as MuiDrawer,
-    List,
     Typography,
-    Divider,
-    IconButton,
-    ListItemIcon,
-    ListItemText,
     TextField,
     Button,
-    ListItemAvatar,
     Modal,
-    ListItemButton,
     Checkbox,
-    Paper,
     FormControlLabel,
+    IconButton,
+    Tooltip,
 } from '@mui/material'
-import {
-    ArrowForwardOutlined,
-    ArrowBackOutlined,
-    AddCircleOutlined,
-} from '@mui/icons-material'
+import { Save, AddCircleOutlined } from '@mui/icons-material'
 import { DateTimePicker, LocalizationProvider } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-
-import axios from 'axios'
-import { ProjectDescription } from './ProjectDescription'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { parse } from 'date-fns'
 import { format } from 'date-fns-tz'
 import { postToDiscord } from '../services/postToDiscord'
 import { getTwitterIcon } from '../services/getTwitterIcon'
+import { cloneDeep } from 'lodash'
 
 const initialState = {
     name: '',
@@ -49,6 +33,7 @@ const initialState = {
     website: '',
     whiteListForm: '',
     squadLeader: '',
+    images: [''],
     mintDate: format(new Date(), "yyyy-MM-dd'T'H:mm:ss") + 'Z',
 }
 
@@ -57,13 +42,21 @@ export const AddProjectModal = ({
     onCloseModal,
     isModalOpen,
     projectToEdit,
+    onActivateNewProject,
 }) => {
     const [values, setValues] = useState(initialState)
-    const [isPostingToDiscord, setIsPostingToDiscord] = useState(true)
+    const [numberOfImages, setNumberOfImages] = useState(1)
 
+    const [isPostingToDiscord, setIsPostingToDiscord] = useState(true)
+    const [isSaving, setIsSaving] = useState(false)
     useEffect(() => {
         if (projectToEdit) {
-            setValues(projectToEdit)
+            console.log('projectToEdit', projectToEdit)
+            setValues({
+                ...projectToEdit,
+                images: projectToEdit.images || [],
+            })
+            setNumberOfImages(projectToEdit.images?.length || 1)
         }
     }, [projectToEdit])
     const handleSendDiscordHook = async () => {
@@ -83,12 +76,14 @@ export const AddProjectModal = ({
         onCloseModal()
     }
     const handleSave = async () => {
+        setIsSaving(true)
         let twitterIcon = null
-
+        console.log('values', values)
         try {
             twitterIcon = await getTwitterIcon(values.twitter)
         } catch (e) {
             console.log(e)
+            setIsSaving(false)
         }
         if (projectToEdit) {
             set(ref(getDatabase(), activeProjectKey), {
@@ -100,8 +95,10 @@ export const AddProjectModal = ({
                 ...values,
                 mintDate: values.mintDate.toString(),
                 twitterIcon,
+                votes: '',
             }).then((db) => {
                 get(db).then((snapshot) => {
+                    onActivateNewProject(snapshot.key)
                     setValues(initialState)
                 })
             })
@@ -109,6 +106,16 @@ export const AddProjectModal = ({
         }
         setValues(initialState)
         onCloseModal()
+        setIsSaving(false)
+    }
+
+    const handleAddImage = () => {
+        setNumberOfImages(numberOfImages + 1)
+    }
+    const handleChangeImage = (index) => (input) => {
+        const newImages = cloneDeep(values.images)
+        newImages[index] = input.target.value
+        setValues({ ...values, images: newImages })
     }
     const style = {
         position: 'absolute',
@@ -119,6 +126,8 @@ export const AddProjectModal = ({
         bgcolor: 'background.paper',
         border: '2px solid #000',
         boxShadow: 24,
+        maxHeight: '90vh',
+        overflow: 'auto',
         p: 4,
     }
 
@@ -231,6 +240,47 @@ export const AddProjectModal = ({
                     fullWidth
                     multiline
                 />
+                {[...Array(numberOfImages)].map((_, i) => {
+                    return (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}
+                            key={i}
+                        >
+                            <TextField
+                                label="Image Url"
+                                placeholder=""
+                                margin="normal"
+                                sx={{
+                                    marginRight: '16px',
+                                    flexGrow: '1',
+                                }}
+                                variant="outlined"
+                                value={values.images[i]}
+                                onChange={handleChangeImage(i)}
+                            />
+                            <Tooltip title="Add another image">
+                                <IconButton
+                                    onClick={handleAddImage}
+                                    sx={{
+                                        height: '55px',
+                                        width: '55px',
+                                        marginTop: '8px',
+                                    }}
+                                >
+                                    <AddCircleOutlined
+                                        sx={{
+                                            height: '40px',
+                                            width: '40px',
+                                        }}
+                                    />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    )
+                })}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <TextField
                         label="Your discord handle"
@@ -254,9 +304,23 @@ export const AddProjectModal = ({
                     />
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button onClick={handleCancel}>Cancel</Button>
+                    <Button
+                        onClick={handleCancel}
+                        variant="outlined"
+                        sx={{ marginRight: '8px' }}
+                    >
+                        Cancel
+                    </Button>
 
-                    <Button onClick={handleSave}>Save</Button>
+                    <LoadingButton
+                        loading={isSaving}
+                        loadingPosition="start"
+                        startIcon={<Save />}
+                        variant="outlined"
+                        onClick={handleSave}
+                    >
+                        Save
+                    </LoadingButton>
                 </Box>
             </Box>
         </Modal>

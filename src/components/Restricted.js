@@ -106,3 +106,17 @@ export const Restricted = () => {
         </>
     )
 }
+// const editAccessTokenIds = [
+//     minneapeolis,
+//     jpegjoey,
+//     ens,
+//     astroboy,
+//     dajuice,
+//     vutek,
+//     nftjordy,
+//     topogigio,
+//     rugnick,
+//     ryu,
+//     hfp,
+//     sainteclectic,
+// ]

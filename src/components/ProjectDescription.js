@@ -244,174 +244,209 @@ export const ProjectDescription = ({
                         </SvgIcon>
                     </IconButton>
                 </Box>
-                <Box sx={{ display: 'flex' }}>
-                    <Paper
-                        elevation={1}
-                        sx={{
-                            padding: '16px',
-                            whiteSpace: 'pre-wrap',
-                            flexGrow: 1,
-                            marginRight: '12px',
-                            backgroundColor: theme.palette.background.main,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Linkify>{activeData.overview}</Linkify>
-                        {activeData.whiteListForm && (
-                            <Box sx={{ marginTop: '8px' }}>
-                                WhiteList:
-                                <Link
-                                    href={activeData.whiteListForm}
-                                    underline="hover"
-                                    sx={{
-                                        marginLeft: 'auto',
-                                        color: theme.palette.primary.dark,
-                                    }}
-                                >
-                                    {' '}
-                                    {activeData.whiteListForm}
-                                </Link>
-                            </Box>
-                        )}
-                    </Paper>
-                    <Paper
-                        elevation={1}
-                        sx={{
-                            padding: '16px',
-                            width: '150px',
-                            backgroundColor: theme.palette.background.main,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box sx={{ display: 'flex' }}>
+                        <Paper
+                            elevation={1}
+                            sx={{
+                                padding: '16px',
+                                whiteSpace: 'pre-wrap',
+                                flexGrow: 1,
+                                marginRight: '12px',
+                                backgroundColor: theme.palette.background.main,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <Linkify>{activeData.overview}</Linkify>
+                            {activeData.whiteListForm && (
+                                <Box sx={{ marginTop: '8px' }}>
+                                    WhiteList:
+                                    <Link
+                                        href={activeData.whiteListForm}
+                                        underline="hover"
+                                        sx={{
+                                            marginLeft: 'auto',
+                                            color: theme.palette.primary.dark,
+                                        }}
+                                    >
+                                        {activeData.whiteListForm}
+                                    </Link>
+                                </Box>
+                            )}
+                        </Paper>
+                        <Paper
+                            elevation={1}
+                            sx={{
+                                padding: '16px',
+                                width: '150px',
+                                backgroundColor: theme.palette.background.main,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
 
-                            '& a:link': {
-                                color: 'green',
-                                backgroundColor: 'transparent',
-                                textDecoration: 'none',
-                            },
-                        }}
-                    >
-                        <FormControl component="fieldset">
-                            {/* <FormLabel component="legend">Gender</FormLabel> */}
-                            <RadioGroup
-                                aria-label="vote"
-                                defaultValue=""
-                                name="radio-buttons-group"
-                                value={vote}
-                            >
-                                <FormControlLabel
-                                    value="mint"
-                                    control={
-                                        <Tooltip
-                                            title="I will mint this"
-                                            placement="left"
-                                        >
-                                            <Radio
-                                                onClick={handleVote}
-                                                sx={{
-                                                    '& .MuiSvgIcon-root': {
-                                                        fontSize: 48,
-                                                    },
-                                                    '&:hover': {
-                                                        // bgcolor: 'transparent',
-                                                    },
+                                '& a:link': {
+                                    color: 'green',
+                                    backgroundColor: 'transparent',
+                                    textDecoration: 'none',
+                                },
+                            }}
+                        >
+                            <FormControl component="fieldset">
+                                {/* <FormLabel component="legend">Gender</FormLabel> */}
+                                <RadioGroup
+                                    aria-label="vote"
+                                    defaultValue=""
+                                    name="radio-buttons-group"
+                                    value={vote}
+                                >
+                                    <FormControlLabel
+                                        value="mint"
+                                        control={
+                                            <Tooltip
+                                                title="I will mint this"
+                                                placement="left"
+                                            >
+                                                <Radio
+                                                    onClick={handleVote}
+                                                    sx={{
+                                                        '& .MuiSvgIcon-root': {
+                                                            fontSize: 48,
+                                                        },
+                                                        '&:hover': {
+                                                            // bgcolor: 'transparent',
+                                                        },
+                                                    }}
+                                                    checkedIcon={
+                                                        <SentimentVerySatisfiedRounded
+                                                            sx={{
+                                                                color: 'limegreen',
+                                                            }}
+                                                        />
+                                                    }
+                                                    icon={
+                                                        <SentimentVerySatisfiedRounded />
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        }
+                                        label={
+                                            Object.keys(
+                                                activeData?.votes?.mint || {}
+                                            ).length
+                                        }
+                                    />
+                                    <FormControlLabel
+                                        value="pass"
+                                        control={
+                                            <Tooltip
+                                                title="I'm indifferent/won't mint"
+                                                placement="left"
+                                            >
+                                                <Radio
+                                                    onClick={handleVote}
+                                                    sx={{
+                                                        '& .MuiSvgIcon-root': {
+                                                            fontSize: 48,
+                                                        },
+                                                        '&:hover': {
+                                                            // bgcolor: 'transparent',
+                                                        },
+                                                    }}
+                                                    checkedIcon={
+                                                        <SentimentNeutralRounded
+                                                            sx={{
+                                                                color: 'gold',
+                                                            }}
+                                                        />
+                                                    }
+                                                    icon={
+                                                        <SentimentNeutralRounded />
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        }
+                                        label={
+                                            Object.keys(
+                                                activeData?.votes?.pass || {}
+                                            ).length
+                                        }
+                                    />
+                                    <FormControlLabel
+                                        value="rug"
+                                        control={
+                                            <Tooltip
+                                                title="This might be a rug"
+                                                placement="left"
+                                            >
+                                                <Radio
+                                                    onClick={handleVote}
+                                                    sx={{
+                                                        '& .MuiSvgIcon-root': {
+                                                            fontSize: 48,
+                                                        },
+                                                        '&:hover': {
+                                                            // bgcolor: 'transparent',
+                                                        },
+                                                    }}
+                                                    checkedIcon={
+                                                        <SentimentVeryDissatisfiedRounded
+                                                            sx={{
+                                                                color: 'red',
+                                                            }}
+                                                        />
+                                                    }
+                                                    icon={
+                                                        <SentimentVeryDissatisfiedRounded />
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        }
+                                        label={
+                                            Object.keys(
+                                                activeData?.votes?.rug || {}
+                                            ).length
+                                        }
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </Paper>
+                    </Box>
+                    {Object.values(activeData?.images || {}).length > 0 && (
+                        <Paper
+                            elevation={1}
+                            sx={{
+                                // padding: '16px',
+                                // width: '150px',
+                                backgroundColor: theme.palette.background.main,
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
+                                marginTop: '16px',
+                                padding: '8px',
+                                flexWrap: 'wrap',
+                            }}
+                        >
+                            {Object.values(activeData.images).map(
+                                (image, index) => {
+                                    return (
+                                        <Box key={index}>
+                                            <img
+                                                src={image}
+                                                alt={`number ${index}`}
+                                                style={{
+                                                    width: 'auto',
+                                                    maxHeight: '200px',
+                                                    margin: '8px',
                                                 }}
-                                                checkedIcon={
-                                                    <SentimentVerySatisfiedRounded
-                                                        sx={{
-                                                            color: 'limegreen',
-                                                        }}
-                                                    />
-                                                }
-                                                icon={
-                                                    <SentimentVerySatisfiedRounded />
-                                                }
                                             />
-                                        </Tooltip>
-                                    }
-                                    label={
-                                        Object.keys(
-                                            activeData?.votes?.mint || {}
-                                        ).length
-                                    }
-                                />
-                                <FormControlLabel
-                                    value="pass"
-                                    control={
-                                        <Tooltip
-                                            title="I'm indifferent/won't mint"
-                                            placement="left"
-                                        >
-                                            <Radio
-                                                onClick={handleVote}
-                                                sx={{
-                                                    '& .MuiSvgIcon-root': {
-                                                        fontSize: 48,
-                                                    },
-                                                    '&:hover': {
-                                                        // bgcolor: 'transparent',
-                                                    },
-                                                }}
-                                                checkedIcon={
-                                                    <SentimentNeutralRounded
-                                                        sx={{
-                                                            color: 'gold',
-                                                        }}
-                                                    />
-                                                }
-                                                icon={
-                                                    <SentimentNeutralRounded />
-                                                }
-                                            />
-                                        </Tooltip>
-                                    }
-                                    label={
-                                        Object.keys(
-                                            activeData?.votes?.pass || {}
-                                        ).length
-                                    }
-                                />
-                                <FormControlLabel
-                                    value="rug"
-                                    control={
-                                        <Tooltip
-                                            title="This might be a rug"
-                                            placement="left"
-                                        >
-                                            <Radio
-                                                onClick={handleVote}
-                                                sx={{
-                                                    '& .MuiSvgIcon-root': {
-                                                        fontSize: 48,
-                                                    },
-                                                    '&:hover': {
-                                                        // bgcolor: 'transparent',
-                                                    },
-                                                }}
-                                                checkedIcon={
-                                                    <SentimentVeryDissatisfiedRounded
-                                                        sx={{
-                                                            color: 'red',
-                                                        }}
-                                                    />
-                                                }
-                                                icon={
-                                                    <SentimentVeryDissatisfiedRounded />
-                                                }
-                                            />
-                                        </Tooltip>
-                                    }
-                                    label={
-                                        Object.keys(
-                                            activeData?.votes?.rug || {}
-                                        ).length
-                                    }
-                                />
-                            </RadioGroup>
-                        </FormControl>
-                    </Paper>
+                                        </Box>
+                                    )
+                                }
+                            )}
+                        </Paper>
+                    )}
                 </Box>
                 {hasEditAccess && (
                     <>
