@@ -32,7 +32,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { AddProjectModal } from './AddProjectModal'
 import axios from 'axios'
 import { ProjectDescription } from './ProjectDescription'
-import { parse } from 'date-fns'
+import { parse, compareAsc } from 'date-fns'
 import { format } from 'date-fns-tz'
 
 const herokuProxy = 'https://enigmatic-headland-40206.herokuapp.com/'
@@ -105,7 +105,6 @@ const Drawer = styled(MuiDrawer, {
 }))
 
 export const MintSquad = ({ hasEditAccess, walletId }) => {
-    const [twitterPics, setTwitterPics] = useState({})
     const [activeProjectKey, setActiveProjectKey] = useState(null)
     const theme = useTheme()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -121,48 +120,6 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         snapshots && !loading && activeProjectKey
             ? snapshots.val()[activeProjectKey]
             : null
-    // useEffect(() => {
-    //     const getTwitterPics = async () => {
-    //         const promises = Object.keys(snapshots.val()).map(
-    //             async (key, i) => {
-    //                 const values = snapshots.val()[key]
-    //                 const {
-    //                     data: { access_token },
-    //                 } = await axios.post(
-    //                     herokuProxy +
-    //                         'https://api.twitter.com/oauth2/token?grant_type=client_credentials',
-    //                     {},
-    //                     {
-    //                         auth: {
-    //                             username: process.env.REACT_APP_TWITTER_API_KEY,
-    //                             password:
-    //                                 process.env
-    //                                     .REACT_APP_TWITTER_API_KEY_SECRET,
-    //                         },
-    //                     }
-    //                 )
-    //                 return axios.get(herokuProxy + api + values.twitter, {
-    //                     headers: {
-    //                         Authorization: `Bearer ${access_token}`,
-    //                     },
-    //                     params: {
-    //                         'user.fields': 'profile_image_url',
-    //                     },
-    //                 })
-    //             }
-    //         )
-    //         await Promise.all(promises).then((res) => {
-    //             let twitterPicObject = {}
-    //             Object.keys(snapshots.val()).forEach((key, i) => {
-    //                 twitterPicObject[key] =
-    //                     res[i].data.data?.profile_image_url || null
-    //             })
-    //             console.log('pics', twitterPicObject)
-    //             setTwitterPics(twitterPicObject)
-    //         })
-    //     }
-    //     !loading && snapshots.val() && getTwitterPics()
-    // }, [Object.keys(snapshots?.val() || {}).length])
 
     const handleUpdateVote = (vote) => {
         const voteOptions = ['mint', 'pass', 'rug']
@@ -188,9 +145,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
             }
         })
     }
-    // const handleSave = (key) => {
-    //     set(ref(getDatabase(), key), edits)
-    // }
+
     const handleDelete = (key) => {
         remove(ref(getDatabase(), key))
     }
@@ -242,34 +197,52 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                     )}
                     {!loading &&
                         snapshots.val() &&
-                        Object.keys(snapshots.val()).map((key, i) => {
-                            const values = snapshots.val()[key]
-                            return (
-                                <ListItemButton
-                                    key={i}
-                                    onClick={() => setActiveProjectKey(key)}
-                                    selected={key === activeProjectKey}
-                                    sx={{
-                                        '&.Mui-selected': {
-                                            backgroundColor:
-                                                theme.palette.background
-                                                    .mediumDark,
-                                        },
-                                    }}
-                                >
-                                    <ListItemAvatar alt="project name" src="">
-                                        <Avatar
-                                            alt={values.name}
-                                            src={values.twitterIcon}
+                        Object.keys(snapshots.val())
+                            .sort((key1, key2) => {
+                                return compareAsc(
+                                    parse(
+                                        snapshots.val()[key1].mintDate,
+                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                        new Date()
+                                    ),
+                                    parse(
+                                        snapshots.val()[key2].mintDate,
+                                        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                        new Date()
+                                    )
+                                )
+                            })
+                            .map((key, i) => {
+                                const values = snapshots.val()[key]
+                                return (
+                                    <ListItemButton
+                                        key={i}
+                                        onClick={() => setActiveProjectKey(key)}
+                                        selected={key === activeProjectKey}
+                                        sx={{
+                                            '&.Mui-selected': {
+                                                backgroundColor:
+                                                    theme.palette.background
+                                                        .mediumDark,
+                                            },
+                                        }}
+                                    >
+                                        <ListItemAvatar
+                                            alt="project name"
+                                            src=""
+                                        >
+                                            <Avatar
+                                                alt={values.name}
+                                                src={values.twitterIcon}
+                                            />
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            sx={{ color: 'white' }}
+                                            primary={values.name}
                                         />
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        sx={{ color: 'white' }}
-                                        primary={values.name}
-                                    />
-                                </ListItemButton>
-                            )
-                        })}
+                                    </ListItemButton>
+                                )
+                            })}
                 </List>
                 <IconButton
                     color="inherit"

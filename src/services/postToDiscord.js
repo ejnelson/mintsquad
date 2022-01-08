@@ -16,7 +16,8 @@ export const postToDiscord = async (values) => {
 
     const payload = {
         username: 'MintSquad',
-        avatar_url: 'https://i.imgur.com/4M34hi2.png',
+        avatar_url:
+            'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/crystal-ball_1f52e.png',
         // content: 'Text message. Up to 2000 characters.',
         embeds: [
             {
@@ -26,7 +27,7 @@ export const postToDiscord = async (values) => {
                     // icon_url:
                     //     'https://4isvscpdfnv4drliginehkrgo4filrahutre5bubppjxm3c2ixpq.arweave.net/4iVZCeMra8HFaDIaQ6omdwqFxAek4k6GgXvTdmxaRd8/?ext=png',
                 },
-                title: `${name}`,
+                title: `${name || 'whoops no project name was given'}`,
                 // url: 'https://google.com/',
                 // description: 'Mint Date:',
                 // timestamp: '2015-12-31T12:00:00.000Z',
@@ -52,14 +53,14 @@ export const postToDiscord = async (values) => {
                         value: `${
                             twitter &&
                             '[Twitter](https://twitter.com/' + twitter + ') |'
-                        } ${discord && '[discord](' + discord + ') |'} ${
+                        } ${discord && '| [discord](' + discord + ')'} ${
                             whiteListForm &&
-                            '[White List Form](' + whiteListForm + ') |'
-                        } [Website](${website})`,
+                            '| [White List Form](' + whiteListForm + ')'
+                        } ${website && '| [Website](' + website + ')'}`,
                     },
                     {
                         name: 'Overview',
-                        value: `${overview}`,
+                        value: `${overview || 'DYOR'}`,
                     },
                 ],
                 // thumbnail: {
@@ -78,14 +79,14 @@ export const postToDiscord = async (values) => {
 
     //test channel
     const res = await axios.post(
-        'https://discord.com/api/webhooks/928706416393453648/2UZB6ABbDuokfM29FHf2pae-ZeHur08-7FzYAZkeUyZs-E77iTJTUgIF9eXHR84BndbP',
+        'https://discord.com/api/webhooks/929125496812367872/XXy8QNMlhE5_clKp82OSQaSO0JgqkteadgtVmd0RHS14nZ3cJz4eN9AGC3Xxcq5-rY33',
         payload
     )
 
     //announcemints
-    const res2 = await axios.post(
-        'https://discord.com/api/webhooks/928375457999630366/3QBNQf9QGtw2sp5jbS3RMMHaVxqmuDirXTG8fNBLW3OBKspKYDdcMRK67L4Z4Lwh-cpw',
-        payload
-    )
+    // const res2 = await axios.post(
+    //     'https://discord.com/api/webhooks/929125864526975096/xAbX1-z4_K73NEg-mx_W7xEzx3sGP918bYMNpFlDWXGZc3YjutsA7_jFby7nnu9eYO_A',
+    //     payload
+    // )
     return res
 }

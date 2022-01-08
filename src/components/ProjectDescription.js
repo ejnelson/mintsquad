@@ -89,7 +89,7 @@ export const ProjectDescription = ({
 
     useEffect(() => {
         setTimer(timeUntilMint())
-    }, [activeData.mintTime])
+    }, [activeProjectKey])
 
     const handleVote = (event) => {
         if (event.target.value === vote) {

@@ -37,6 +37,7 @@ import { ProjectDescription } from './ProjectDescription'
 import { parse } from 'date-fns'
 import { format } from 'date-fns-tz'
 import { postToDiscord } from '../services/postToDiscord'
+import { getTwitterIcon } from '../services/getTwitterIcon'
 
 const initialState = {
     name: '',
@@ -57,8 +58,6 @@ export const AddProjectModal = ({
     projectToEdit,
 }) => {
     const [values, setValues] = useState(initialState)
-    console.log('edit values', values)
-    console.log('proejct editin', projectToEdit)
     const [isPostingToDiscord, setIsPostingToDiscord] = useState(true)
 
     useEffect(() => {
@@ -82,13 +81,18 @@ export const AddProjectModal = ({
         setValues(initialState)
         onCloseModal()
     }
-    const handleSave = () => {
+    const handleSave = async () => {
+        const twitterIcon = await getTwitterIcon(values.twitter)
         if (projectToEdit) {
-            set(ref(getDatabase(), activeProjectKey), values)
+            set(ref(getDatabase(), activeProjectKey), {
+                ...values,
+                twitterIcon,
+            })
         } else {
             push(ref(getDatabase()), {
                 ...values,
                 mintDate: values.mintDate.toString(),
+                twitterIcon,
             }).then((db) => {
                 get(db).then((snapshot) => {
                     setValues(initialState)
@@ -172,7 +176,7 @@ export const AddProjectModal = ({
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <TextField
-                        label="Discord Invite Link"
+                        label="Discord Invite Link (with https://)"
                         placeholder=""
                         margin="normal"
                         sx={{ marginRight: '16px', flexGrow: '1' }}
@@ -192,7 +196,7 @@ export const AddProjectModal = ({
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <TextField
-                        label="Website"
+                        label="Website (with https://)"
                         placeholder=""
                         margin="normal"
                         sx={{ marginRight: '16px', flexGrow: '1' }}
@@ -201,7 +205,7 @@ export const AddProjectModal = ({
                         onChange={handleChange('website')}
                     />
                     <TextField
-                        label="Whitelist form link"
+                        label="Whitelist form link (with https://)"
                         placeholder=""
                         margin="normal"
                         sx={{ flexGrow: '1' }}
