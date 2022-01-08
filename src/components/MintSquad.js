@@ -32,7 +32,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { AddProjectModal } from './AddProjectModal'
 import axios from 'axios'
 import { ProjectDescription } from './ProjectDescription'
-import { parse, compareAsc } from 'date-fns'
+import { parse, parseISO, compareAsc } from 'date-fns'
 import { format } from 'date-fns-tz'
 
 const herokuProxy = 'https://enigmatic-headland-40206.herokuapp.com/'
@@ -155,9 +155,9 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         setActiveProjectKey(null)
     }
 
-    // const handleDelete = (key) => { // not active
-    // remove(ref(getDatabase(), key))
-    // }
+    const handleDelete = () => {
+        remove(ref(getDatabase(), activeProjectKey))
+    }
     const handleEdit = (key) => {
         setIsModalOpen(true)
         setProjectToEdit(activeData)
@@ -251,6 +251,14 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                                         <ListItemText
                                             sx={{ color: 'white' }}
                                             primary={values.name}
+                                            secondary={format(
+                                                parseISO(
+                                                    values.mintDate,
+                                                    "yyyy-MM-dd'T'HH:mm:ss'Z",
+                                                    new Date()
+                                                ),
+                                                'MMM dd h:mm a 	zzz'
+                                            )}
                                         />
                                     </ListItemButton>
                                 )
@@ -303,6 +311,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                         onUpdateVote={handleUpdateVote}
                         activeProjectKey={activeProjectKey}
                         onArchive={handleArchive}
+                        onDelete={handleDelete}
                         onEdit={handleEdit}
                         hasEditAccess={hasEditAccess}
                         walletId={walletId}

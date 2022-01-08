@@ -48,6 +48,7 @@ const initialState = {
     overview: '',
     website: '',
     whiteListForm: '',
+    squadLeader: '',
     mintDate: format(new Date(), "yyyy-MM-dd'T'H:mm:ss") + 'Z',
 }
 

@@ -47,6 +47,7 @@ export const ProjectDescription = ({
     activeData,
     onUpdateVote,
     onArchive,
+    onDelete,
     onEdit,
     activeProjectKey,
     hasEditAccess,
@@ -54,6 +55,8 @@ export const ProjectDescription = ({
 }) => {
     const theme = useTheme()
     const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false)
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+
     const [vote, setVote] = useState('')
     const [postMintFloorPrice, setPostMintFloorPrice] = useState('')
     const [timer, setTimer] = useState({
@@ -108,6 +111,11 @@ export const ProjectDescription = ({
     const handleArchive = (postFloorMintPrice) => {
         onArchive(postFloorMintPrice)
         setIsArchiveDialogOpen(false)
+    }
+    const handleDelete = (key) => {
+        onDelete()
+
+        setIsDeleteDialogOpen(false)
     }
     const timeUntilMint = () => {
         const days = differenceInDays(
@@ -433,6 +441,8 @@ export const ProjectDescription = ({
                                 sx={{
                                     backgroundColor:
                                         theme.palette.background.dark,
+                                    marginRight: '8px',
+
                                     '&:hover': {
                                         backgroundColor:
                                             theme.palette.background.light,
@@ -441,7 +451,22 @@ export const ProjectDescription = ({
                             >
                                 Archive
                             </Button>
+                            <Button
+                                variant="contained"
+                                onClick={() => setIsDeleteDialogOpen(true)}
+                                sx={{
+                                    backgroundColor:
+                                        theme.palette.background.dark,
+                                    '&:hover': {
+                                        backgroundColor:
+                                            theme.palette.background.light,
+                                    },
+                                }}
+                            >
+                                Delete
+                            </Button>
                         </Box>
+
                         <Dialog
                             open={isArchiveDialogOpen}
                             onClose={() => setIsArchiveDialogOpen(false)}
@@ -487,6 +512,38 @@ export const ProjectDescription = ({
                                     onClick={() =>
                                         handleArchive(postMintFloorPrice)
                                     }
+                                    autoFocus
+                                >
+                                    Confirm
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                        <Dialog
+                            open={isDeleteDialogOpen}
+                            onClose={() => setIsDeleteDialogOpen(false)}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">
+                                {
+                                    'Are you sure you want to delete this project?'
+                                }
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    The project will deleted and all votes/data
+                                    will be lost.
+                                </DialogContentText>
+                            </DialogContent>
+
+                            <DialogActions>
+                                <Button
+                                    onClick={() => setIsDeleteDialogOpen(false)}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    onClick={() => handleDelete()}
                                     autoFocus
                                 >
                                     Confirm
