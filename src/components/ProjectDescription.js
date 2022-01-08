@@ -18,6 +18,7 @@ import {
     DialogActions,
     Tooltip,
     Link,
+    TextField,
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import {
@@ -45,15 +46,16 @@ import Linkify from 'react-linkify'
 export const ProjectDescription = ({
     activeData,
     onUpdateVote,
-    onDelete,
+    onArchive,
     onEdit,
     activeProjectKey,
     hasEditAccess,
     walletId,
 }) => {
     const theme = useTheme()
-    const [isDialogOpen, setIsDialogOpen] = useState(false)
+    const [isArchiveDialogOpen, setIsArchiveDialogOpen] = useState(false)
     const [vote, setVote] = useState('')
+    const [postMintFloorPrice, setPostMintFloorPrice] = useState('')
     const [timer, setTimer] = useState({
         days: 0,
         hours: 0,
@@ -103,9 +105,9 @@ export const ProjectDescription = ({
     const handleEdit = () => {
         onEdit(activeProjectKey)
     }
-    const handleDelete = () => {
-        onDelete(activeProjectKey)
-        setIsDialogOpen(false)
+    const handleArchive = (postFloorMintPrice) => {
+        onArchive(postFloorMintPrice)
+        setIsArchiveDialogOpen(false)
     }
     const timeUntilMint = () => {
         const days = differenceInDays(
@@ -427,7 +429,7 @@ export const ProjectDescription = ({
                             </Button>
                             <Button
                                 variant="contained"
-                                onClick={() => setIsDialogOpen(true)}
+                                onClick={() => setIsArchiveDialogOpen(true)}
                                 sx={{
                                     backgroundColor:
                                         theme.palette.background.dark,
@@ -437,31 +439,56 @@ export const ProjectDescription = ({
                                     },
                                 }}
                             >
-                                Delete
+                                Archive
                             </Button>
                         </Box>
                         <Dialog
-                            open={isDialogOpen}
-                            onClose={() => setIsDialogOpen(false)}
+                            open={isArchiveDialogOpen}
+                            onClose={() => setIsArchiveDialogOpen(false)}
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
                             <DialogTitle id="alert-dialog-title">
                                 {
-                                    'Are you sure you want to delete this project?'
+                                    'Are you sure you want to archive this project?'
                                 }
                             </DialogTitle>
                             <DialogContent>
                                 <DialogContentText id="alert-dialog-description">
-                                    This will remove the project from available
-                                    projects to view and delete all votes.
+                                    The project will be removed from the project
+                                    list, but the project data will be saved and
+                                    available at a later time.
                                 </DialogContentText>
                             </DialogContent>
+                            <TextField
+                                label="Floor price 1 hour post mint"
+                                placeholder=""
+                                margin="normal"
+                                sx={{
+                                    marginLeft: 'auto',
+                                    marginRight: '16px',
+                                    width: '300px',
+                                }}
+                                variant="outlined"
+                                value={postMintFloorPrice}
+                                onChange={(event) =>
+                                    setPostMintFloorPrice(event.target.value)
+                                }
+                            />
                             <DialogActions>
-                                <Button onClick={() => setIsDialogOpen(false)}>
+                                <Button
+                                    onClick={() =>
+                                        setIsArchiveDialogOpen(false)
+                                    }
+                                >
                                     Cancel
                                 </Button>
-                                <Button onClick={handleDelete} autoFocus>
+                                <Button
+                                    onClick={() =>
+                                        handleArchive(postMintFloorPrice)
+                                    }
+                                    autoFocus
+                                >
                                     Confirm
                                 </Button>
                             </DialogActions>

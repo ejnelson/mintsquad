@@ -82,7 +82,13 @@ export const AddProjectModal = ({
         onCloseModal()
     }
     const handleSave = async () => {
-        const twitterIcon = await getTwitterIcon(values.twitter)
+        let twitterIcon = null
+
+        try {
+            twitterIcon = await getTwitterIcon(values.twitter)
+        } catch (e) {
+            console.log(e)
+        }
         if (projectToEdit) {
             set(ref(getDatabase(), activeProjectKey), {
                 ...values,

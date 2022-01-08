@@ -83,10 +83,10 @@ export const postToDiscord = async (values) => {
         payload
     )
 
-    //announcemints
-    // const res2 = await axios.post(
-    //     'https://discord.com/api/webhooks/929125864526975096/xAbX1-z4_K73NEg-mx_W7xEzx3sGP918bYMNpFlDWXGZc3YjutsA7_jFby7nnu9eYO_A',
-    //     payload
-    // )
+    // announcemints
+    const res2 = await axios.post(
+        'https://discord.com/api/webhooks/929125864526975096/xAbX1-z4_K73NEg-mx_W7xEzx3sGP918bYMNpFlDWXGZc3YjutsA7_jFby7nnu9eYO_A',
+        payload
+    )
     return res
 }

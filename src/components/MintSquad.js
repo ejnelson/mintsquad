@@ -146,9 +146,18 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         })
     }
 
-    const handleDelete = (key) => {
-        remove(ref(getDatabase(), key))
+    const handleArchive = (postMintFloorPrice) => {
+        set(
+            ref(getDatabase(), activeProjectKey + `/floorPricePostMint/`),
+            postMintFloorPrice
+        )
+        set(ref(getDatabase(), activeProjectKey + `/archived/`), true)
+        setActiveProjectKey(null)
     }
+
+    // const handleDelete = (key) => { // not active
+    // remove(ref(getDatabase(), key))
+    // }
     const handleEdit = (key) => {
         setIsModalOpen(true)
         setProjectToEdit(activeData)
@@ -198,6 +207,9 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                     {!loading &&
                         snapshots.val() &&
                         Object.keys(snapshots.val())
+                            .filter(
+                                (key) => snapshots.val()[key].archived !== true
+                            )
                             .sort((key1, key2) => {
                                 return compareAsc(
                                     parse(
@@ -290,7 +302,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                         activeData={activeData}
                         onUpdateVote={handleUpdateVote}
                         activeProjectKey={activeProjectKey}
-                        onDelete={handleDelete}
+                        onArchive={handleArchive}
                         onEdit={handleEdit}
                         hasEditAccess={hasEditAccess}
                         walletId={walletId}
