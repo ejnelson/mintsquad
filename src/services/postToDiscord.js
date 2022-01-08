@@ -52,7 +52,7 @@ export const postToDiscord = async (values) => {
                         name: 'Links',
                         value: `${
                             twitter &&
-                            '[Twitter](https://twitter.com/' + twitter + ') |'
+                            '[Twitter](https://twitter.com/' + twitter + ')'
                         } ${discord && '| [discord](' + discord + ')'} ${
                             whiteListForm &&
                             '| [White List Form](' + whiteListForm + ')'
