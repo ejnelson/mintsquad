@@ -49,6 +49,8 @@ export const ProjectDescription = ({
     onArchive,
     onDelete,
     onEdit,
+    onApprove,
+
     activeProjectKey,
     hasEditAccess,
     walletId,
@@ -118,6 +120,9 @@ export const ProjectDescription = ({
         onDelete()
 
         setIsDeleteDialogOpen(false)
+    }
+    const handleApprove = () => {
+        onApprove()
     }
     const timeUntilMint = () => {
         const days = differenceInDays(
@@ -457,6 +462,23 @@ export const ProjectDescription = ({
                                 marginTop: '8px',
                             }}
                         >
+                            {activeData.suggested && (
+                                <Button
+                                    variant="contained"
+                                    onClick={handleApprove}
+                                    sx={{
+                                        marginRight: '8px',
+                                        backgroundColor:
+                                            theme.palette.background.dark,
+                                        '&:hover': {
+                                            backgroundColor:
+                                                theme.palette.background.light,
+                                        },
+                                    }}
+                                >
+                                    Approve Suggested Project
+                                </Button>
+                            )}
                             <Button
                                 variant="contained"
                                 onClick={handleEdit}

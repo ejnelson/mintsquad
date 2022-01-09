@@ -51,20 +51,12 @@ const AppBar = styled(MuiAppBar, {
     }),
 }))
 
-const LinkTab = (props) => {
-    return <Tab component={Link} {...props} />
-}
 export const Layout = () => {
     const theme = useTheme()
     const { wallet, disconnect, disconnecting } = useWallet()
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
-    const [tab, setTab] = useState(0)
     let { pathname } = useLocation()
-    console.log(pathname)
-    const handleChangeTab = (event, newTab) => {
-        setTab(newTab)
-    }
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget)
     }
@@ -112,10 +104,10 @@ export const Layout = () => {
                             }}
                         />
                         <Tab
-                            label="Suggest a Mint"
-                            value="/suggestMint"
+                            label="SuggestMints"
+                            value="/suggestMints"
                             component={Link}
-                            to={'suggestMint'}
+                            to={'suggestMints'}
                             sx={{
                                 color: 'white',
                                 '&.Mui-selected': {

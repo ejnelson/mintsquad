@@ -52,7 +52,6 @@ export const AddProjectModal = ({
     const [isSaving, setIsSaving] = useState(false)
     useEffect(() => {
         if (projectToEdit) {
-            console.log('projectToEdit', projectToEdit)
             setValues({
                 ...projectToEdit,
                 images: projectToEdit.images || [],
@@ -74,16 +73,15 @@ export const AddProjectModal = ({
     }
     const handleCancel = () => {
         setValues(initialState)
+        setNumberOfImages(1)
         onCloseModal()
     }
     const handleSave = async () => {
         setIsSaving(true)
         let twitterIcon = null
-        console.log('values', values)
         try {
             twitterIcon = await getTwitterIcon(values.twitter)
         } catch (e) {
-            console.log(e)
             setIsSaving(false)
         }
         if (projectToEdit) {
@@ -108,6 +106,7 @@ export const AddProjectModal = ({
             isPostingToDiscord && handleSendDiscordHook()
         }
         setValues(initialState)
+        setNumberOfImages(1)
         onCloseModal()
         setIsSaving(false)
     }
@@ -142,7 +141,7 @@ export const AddProjectModal = ({
         >
             <Box sx={style} component="form">
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Add Project
+                    {suggested ? 'Suggest Project' : 'Add Project'}
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <TextField
@@ -261,7 +260,7 @@ export const AddProjectModal = ({
                                     flexGrow: '1',
                                 }}
                                 variant="outlined"
-                                value={values.images[i]}
+                                value={values.images[i] || ''}
                                 onChange={handleChangeImage(i)}
                             />
                             <Tooltip title="Add another image">

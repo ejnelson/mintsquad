@@ -7,7 +7,6 @@ import {
 } from '@solana/wallet-adapter-react-ui'
 import { LinearProgress, Box, Paper } from '@mui/material'
 import { Routes, Route, Link, useLocation } from 'react-router-dom'
-import { SuggestMint } from './SuggestMint'
 import { Alpha } from './Alpha'
 import { Tools } from './Tools'
 
@@ -64,11 +63,12 @@ export const Restricted = () => {
                         }
                     />
                     <Route
-                        path="/suggestMint"
+                        path="/suggestMints"
                         element={
-                            <SuggestMint
+                            <MintSquad
                                 hasEditAccess={walletHasEditAccessToken}
                                 walletId={publicKey?.toString()}
+                                isSuggestMints={true}
                             />
                         }
                     />

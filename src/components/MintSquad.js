@@ -2,7 +2,7 @@ import { ref, getDatabase, set, get, remove, push } from 'firebase/database'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 import { useObject } from 'react-firebase-hooks/database'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import { styled, useTheme } from '@mui/material/styles'
 import {
@@ -10,15 +10,11 @@ import {
     Box,
     Drawer as MuiDrawer,
     List,
-    Typography,
     Divider,
     IconButton,
     ListItemIcon,
     ListItemText,
-    TextField,
-    Button,
     ListItemAvatar,
-    Modal,
     ListItemButton,
     Paper,
 } from '@mui/material'
@@ -27,16 +23,10 @@ import {
     ArrowBackOutlined,
     AddCircleOutlined,
 } from '@mui/icons-material'
-import { DateTimePicker, LocalizationProvider } from '@mui/lab'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { AddProjectModal } from './AddProjectModal'
-import axios from 'axios'
 import { ProjectDescription } from './ProjectDescription'
 import { parse, parseISO, compareAsc } from 'date-fns'
 import { format } from 'date-fns-tz'
-
-const herokuProxy = 'https://enigmatic-headland-40206.herokuapp.com/'
-const api = 'https://api.twitter.com/2/users/by/username/'
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -104,7 +94,7 @@ const Drawer = styled(MuiDrawer, {
     }),
 }))
 
-export const MintSquad = ({ hasEditAccess, walletId }) => {
+export const MintSquad = ({ hasEditAccess, walletId, isSuggestMints }) => {
     const [activeProjectKey, setActiveProjectKey] = useState(null)
     const theme = useTheme()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -162,6 +152,9 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
         setIsModalOpen(true)
         setProjectToEdit(activeData)
     }
+    const handleApprove = () => {
+        set(ref(getDatabase(), activeProjectKey + `/suggested/`), false)
+    }
 
     const handleAddProject = () => {
         setIsModalOpen(true)
@@ -182,6 +175,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                 onCloseModal={handleCloseModal}
                 activeProjectKey={activeProjectKey}
                 onActivateNewProject={handleActivateNewProject}
+                suggested={isSuggestMints}
             />
 
             <Drawer variant="permanent" open={open}>
@@ -214,7 +208,8 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                             .filter(
                                 (key) =>
                                     snapshots.val()[key].archived !== true &&
-                                    snapshots.val()[key].suggested !== true
+                                    snapshots.val()[key].suggested ===
+                                        isSuggestMints
                             )
                             .sort((key1, key2) => {
                                 return compareAsc(
@@ -319,6 +314,7 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                         onArchive={handleArchive}
                         onDelete={handleDelete}
                         onEdit={handleEdit}
+                        onApprove={handleApprove}
                         hasEditAccess={hasEditAccess}
                         walletId={walletId}
                     />
