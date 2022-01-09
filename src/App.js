@@ -19,7 +19,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { Layout } from './components/Layout'
 import { Notification } from './Notification'
 import { ThemeProvider } from './ThemeProvider'
-
+import { BrowserRouter } from 'react-router-dom'
 export const App = () => {
     // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
     const network = WalletAdapterNetwork.Mainnet
@@ -62,7 +62,9 @@ export const App = () => {
             <ConnectionProvider endpoint={endpoint}>
                 <WalletProvider wallets={wallets} onError={onError} autoConnect>
                     <WalletModalProvider>
-                        <Layout />
+                        <BrowserRouter>
+                            <Layout />
+                        </BrowserRouter>
                     </WalletModalProvider>
                     <Toaster position="bottom-right" reverseOrder={false} />
                 </WalletProvider>

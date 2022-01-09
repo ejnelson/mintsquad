@@ -12,6 +12,7 @@ export const postToDiscord = async (values) => {
         supply,
         website,
         whiteListForm,
+        images,
     } = values
 
     const payload = {
@@ -53,7 +54,7 @@ export const postToDiscord = async (values) => {
                         value: `${
                             twitter &&
                             '[Twitter](https://twitter.com/' + twitter + ')'
-                        } ${discord && '| [discord](' + discord + ')'} ${
+                        } ${discord && '| [Discord](' + discord + ')'} ${
                             whiteListForm &&
                             '| [White List Form](' + whiteListForm + ')'
                         } ${website && '| [Website](' + website + ')'}`,
@@ -74,6 +75,56 @@ export const postToDiscord = async (values) => {
                 //     icon_url: 'https://i.imgur.com/fKL31aD.jpg',
                 // },
             },
+            // ...images.map((image) => ({
+            //     image: {
+            //         url: image,
+            //     },
+            // })),
+            // {
+            //     image: {
+            //         url: images[0] || '',
+            //     },
+            // },
+            // {
+            //     image: {
+            //         url: images[1] || '',
+            //     },
+            // },
+            // {
+            //     image: {
+            //         url: images[2] || '',
+            //     },
+            // },
+            // {
+            //     image: {
+            //         url: images[3] || '',
+            //     },
+            // },
+            // {
+            //     image: {
+            //         url: images[4] || '',
+            //     },
+            // },
+            // {
+            //     image: {
+            //         url: images[5] || '',
+            //     },
+            // },
+            // {
+            //     image: {
+            //         url: images[6] || '',
+            //     },
+            // },
+            // {
+            //     image: {
+            //         url: images[7] || '',
+            //     },
+            // },
+            // {
+            //     image: {
+            //         url: images[8] || '',
+            //     },
+            // },
         ],
     }
     // const payload = {
@@ -126,16 +177,16 @@ export const postToDiscord = async (values) => {
     //     ],
     // }
     //test channel
-    // const res = await axios.post(
-    //     'https://discord.com/api/webhooks/929125496812367872/XXy8QNMlhE5_clKp82OSQaSO0JgqkteadgtVmd0RHS14nZ3cJz4eN9AGC3Xxcq5-rY33',
+    const res = await axios.post(
+        'https://discord.com/api/webhooks/929534918164348948/rAGUeFWeuSrfGkmn26RoUBMH4ycIn5CjngisNGcb5rxgQ4dTJ-SCLJlzH7-5lXRzD0kX',
 
-    //     payload
-    // )
-    // console.log('res', res)
-    // announcemints
-    const res2 = await axios.post(
-        'https://discord.com/api/webhooks/929125864526975096/xAbX1-z4_K73NEg-mx_W7xEzx3sGP918bYMNpFlDWXGZc3YjutsA7_jFby7nnu9eYO_A',
         payload
     )
-    return res2
+    // console.log('res', res)
+    // announcemints
+    // const res2 = await axios.post(
+    //     'https://discord.com/api/webhooks/929125864526975096/xAbX1-z4_K73NEg-mx_W7xEzx3sGP918bYMNpFlDWXGZc3YjutsA7_jFby7nnu9eYO_A',
+    //     payload
+    // )
+    return res
 }

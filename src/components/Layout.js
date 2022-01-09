@@ -10,11 +10,17 @@ import {
     SvgIcon,
     Menu,
     MenuItem,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    Tabs,
+    Tab,
 } from '@mui/material'
 import { Twitter } from '@mui/icons-material'
 import { Restricted } from './Restricted'
 import { useWallet } from '@solana/wallet-adapter-react'
-
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
 const drawerWidth = 240
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -45,11 +51,20 @@ const AppBar = styled(MuiAppBar, {
     }),
 }))
 
+const LinkTab = (props) => {
+    return <Tab component={Link} {...props} />
+}
 export const Layout = () => {
     const theme = useTheme()
     const { wallet, disconnect, disconnecting } = useWallet()
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
+    const [tab, setTab] = useState(0)
+    let { pathname } = useLocation()
+    console.log(pathname)
+    const handleChangeTab = (event, newTab) => {
+        setTab(newTab)
+    }
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget)
     }
@@ -60,6 +75,7 @@ export const Layout = () => {
         disconnect()
         setAnchorEl(null)
     }
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -68,6 +84,79 @@ export const Layout = () => {
                     <Typography variant="h1" noWrap component="div">
                         🔮 MINT $QUAD
                     </Typography>
+
+                    <Tabs
+                        value={pathname}
+                        // onChange={handleChangeTab}
+                        aria-label="nav tabs example"
+                        sx={{
+                            marginLeft: '32px',
+                            '& .MuiTabs-indicator': {
+                                backgroundColor: '#1890ff',
+                                height: '0px',
+                            },
+                        }}
+                    >
+                        <Tab
+                            label="Mints"
+                            value="/"
+                            component={Link}
+                            to={'/'}
+                            sx={{
+                                color: 'white',
+                                '&.Mui-selected': {
+                                    color: '#fff',
+                                    backgroundColor:
+                                        theme.palette.background.dark,
+                                },
+                            }}
+                        />
+                        <Tab
+                            label="Suggest a Mint"
+                            value="/suggestMint"
+                            component={Link}
+                            to={'suggestMint'}
+                            sx={{
+                                color: 'white',
+                                '&.Mui-selected': {
+                                    color: '#fff',
+                                    backgroundColor:
+                                        theme.palette.background.dark,
+                                },
+                                '&.Mui-focusVisible': {
+                                    backgroundColor: 'rgba(100, 95, 228, 0.32)',
+                                },
+                            }}
+                        />
+                        {/* <Tab
+                            value="/alpha"
+                            label="Alpha"
+                            component={Link}
+                            to={'alpha'}
+                            sx={{
+                                color: 'white',
+                                '&.Mui-selected': {
+                                    color: '#fff',
+                                    backgroundColor:
+                                        theme.palette.background.dark,
+                                },
+                            }}
+                        />
+                        <Tab
+                            value="/tools"
+                            label="Tools"
+                            component={Link}
+                            to={'tools'}
+                            sx={{
+                                color: 'white',
+                                '&.Mui-selected': {
+                                    color: '#fff',
+                                    backgroundColor:
+                                        theme.palette.background.dark,
+                                },
+                            }}
+                        /> */}
+                    </Tabs>
 
                     <IconButton
                         variant="contained"

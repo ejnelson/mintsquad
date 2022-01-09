@@ -6,19 +6,10 @@ import {
     WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui'
 import { LinearProgress, Box, Paper } from '@mui/material'
-
-//working on auth in firebase
-// import { getAuth, signInAnonymously } from 'firebase/auth'
-// const auth = getAuth()
-// signInAnonymously(auth)
-//     .then(() => {
-//         console.log('signed in anonymously')
-//     })
-//     .catch((error) => {
-//         const errorCode = error.code
-//         const errorMessage = error.message
-//         // ...
-//     })
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
+import { SuggestMint } from './SuggestMint'
+import { Alpha } from './Alpha'
+import { Tools } from './Tools'
 
 const validAuthorities = [
     // 'BV8MTEdwNVCjqJEaFMVkSVok3J6p6Fj4GDuQ1AYdchaW', trashpanda
@@ -42,6 +33,7 @@ const editAccessTokenIds = {
 }
 export const Restricted = () => {
     const { wallet } = useWallet()
+    let location = useLocation()
 
     const { publicKey } = wallet?.adapter || {}
     const { connection } = useConnection()
@@ -61,10 +53,29 @@ export const Restricted = () => {
             {isLoading ? (
                 <LinearProgress />
             ) : walletHasValidNfts ? (
-                <MintSquad
-                    hasEditAccess={walletHasEditAccessToken}
-                    walletId={publicKey?.toString()}
-                />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <MintSquad
+                                hasEditAccess={walletHasEditAccessToken}
+                                walletId={publicKey?.toString()}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/suggestMint"
+                        element={
+                            <SuggestMint
+                                hasEditAccess={walletHasEditAccessToken}
+                                walletId={publicKey?.toString()}
+                            />
+                        }
+                    />
+
+                    <Route path="/alpha" element={<Alpha />} />
+                    <Route path="/tools" element={<Tools />} />
+                </Routes>
             ) : (
                 <Box
                     sx={{

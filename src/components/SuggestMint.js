@@ -104,7 +104,7 @@ const Drawer = styled(MuiDrawer, {
     }),
 }))
 
-export const MintSquad = ({ hasEditAccess, walletId }) => {
+export const SuggestMint = ({ hasEditAccess, walletId }) => {
     const [activeProjectKey, setActiveProjectKey] = useState(null)
     const theme = useTheme()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -182,39 +182,36 @@ export const MintSquad = ({ hasEditAccess, walletId }) => {
                 onCloseModal={handleCloseModal}
                 activeProjectKey={activeProjectKey}
                 onActivateNewProject={handleActivateNewProject}
+                suggested={true}
             />
 
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader />
 
                 <List>
-                    {hasEditAccess && (
-                        <>
-                            <ListItemButton onClick={handleAddProject}>
-                                <ListItemIcon>
-                                    <AddCircleOutlined
-                                        sx={{
-                                            height: '40px',
-                                            width: '40px',
-                                            color: 'white',
-                                        }}
-                                    />
-                                </ListItemIcon>
-                                <ListItemText
-                                    sx={{ color: 'white' }}
-                                    primary="Add Project"
+                    <>
+                        <ListItemButton onClick={handleAddProject}>
+                            <ListItemIcon>
+                                <AddCircleOutlined
+                                    sx={{
+                                        height: '40px',
+                                        width: '40px',
+                                        color: 'white',
+                                    }}
                                 />
-                            </ListItemButton>
-                            <Divider />
-                        </>
-                    )}
+                            </ListItemIcon>
+                            <ListItemText
+                                sx={{ color: 'white' }}
+                                primary="Add Project"
+                            />
+                        </ListItemButton>
+                        <Divider />
+                    </>
                     {!loading &&
                         snapshots.val() &&
                         Object.keys(snapshots.val())
                             .filter(
-                                (key) =>
-                                    snapshots.val()[key].archived !== true &&
-                                    snapshots.val()[key].suggested !== true
+                                (key) => snapshots.val()[key].suggested === true
                             )
                             .sort((key1, key2) => {
                                 return compareAsc(

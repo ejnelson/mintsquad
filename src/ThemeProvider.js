@@ -41,6 +41,11 @@ const theme = createTheme({
             fontWeight: 800,
             letterSpacing: '0px',
         },
+        h3: {
+            fontSize: '14px',
+            fontWeight: 800,
+            letterSpacing: '0px',
+        },
     },
     palette: {
         primary: primary,

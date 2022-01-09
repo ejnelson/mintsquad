@@ -43,11 +43,12 @@ export const AddProjectModal = ({
     isModalOpen,
     projectToEdit,
     onActivateNewProject,
+    suggested = false,
 }) => {
     const [values, setValues] = useState(initialState)
     const [numberOfImages, setNumberOfImages] = useState(1)
 
-    const [isPostingToDiscord, setIsPostingToDiscord] = useState(true)
+    const [isPostingToDiscord, setIsPostingToDiscord] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
     useEffect(() => {
         if (projectToEdit) {
@@ -89,6 +90,7 @@ export const AddProjectModal = ({
             set(ref(getDatabase(), activeProjectKey), {
                 ...values,
                 twitterIcon,
+                suggested,
             })
         } else {
             push(ref(getDatabase()), {
@@ -96,6 +98,7 @@ export const AddProjectModal = ({
                 mintDate: values.mintDate.toString(),
                 twitterIcon,
                 votes: '',
+                suggested,
             }).then((db) => {
                 get(db).then((snapshot) => {
                     onActivateNewProject(snapshot.key)
@@ -281,28 +284,32 @@ export const AddProjectModal = ({
                         </Box>
                     )
                 })}
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-                    <TextField
-                        label="Your discord handle"
-                        placeholder=""
-                        margin="normal"
-                        sx={{ marginRight: '16px' }}
-                        variant="outlined"
-                        value={values.squadLeader}
-                        onChange={handleChange('squadLeader')}
-                    />
-                    <FormControlLabel
-                        label="Post project to discord"
-                        control={
-                            <Checkbox
-                                checked={isPostingToDiscord}
-                                onChange={(event) =>
-                                    setIsPostingToDiscord(event.target.checked)
-                                }
-                            />
-                        }
-                    />
-                </Box>
+                {!suggested && (
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+                        <TextField
+                            label="Your discord handle"
+                            placeholder=""
+                            margin="normal"
+                            sx={{ marginRight: '16px' }}
+                            variant="outlined"
+                            value={values.squadLeader}
+                            onChange={handleChange('squadLeader')}
+                        />
+                        <FormControlLabel
+                            label="Post project to discord"
+                            control={
+                                <Checkbox
+                                    checked={isPostingToDiscord}
+                                    onChange={(event) =>
+                                        setIsPostingToDiscord(
+                                            event.target.checked
+                                        )
+                                    }
+                                />
+                            }
+                        />
+                    </Box>
+                )}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
                         onClick={handleCancel}

@@ -51,6 +51,7 @@
         "react-firebase-hooks": "^4.0.1",
         "react-hot-toast": "^2.1.1",
         "react-linkify": "^1.0.0-alpha",
+        "react-router-dom": "6",
         "shx": "^0.3.3",
         "twitter": "^1.7.1",
         "twitter.js": "^0.10.1"
