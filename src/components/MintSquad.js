@@ -189,27 +189,26 @@ export const MintSquad = ({
                 <DrawerHeader />
 
                 <List sx={{ overflow: 'scroll' }}>
-                    {hasEditAccess ||
-                        (isSuggestMints && (
-                            <>
-                                <ListItemButton onClick={handleAddProject}>
-                                    <ListItemIcon>
-                                        <AddCircleOutlined
-                                            sx={{
-                                                height: '40px',
-                                                width: '40px',
-                                                color: 'white',
-                                            }}
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        sx={{ color: 'white' }}
-                                        primary="Add Project"
+                    {(hasEditAccess || isSuggestMints) && (
+                        <>
+                            <ListItemButton onClick={handleAddProject}>
+                                <ListItemIcon>
+                                    <AddCircleOutlined
+                                        sx={{
+                                            height: '40px',
+                                            width: '40px',
+                                            color: 'white',
+                                        }}
                                     />
-                                </ListItemButton>
-                                <Divider />
-                            </>
-                        ))}
+                                </ListItemIcon>
+                                <ListItemText
+                                    sx={{ color: 'white' }}
+                                    primary="Add Project"
+                                />
+                            </ListItemButton>
+                            <Divider />
+                        </>
+                    )}
                     {!loading &&
                         snapshots.val() &&
                         Object.keys(snapshots.val())
