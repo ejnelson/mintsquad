@@ -2,7 +2,7 @@ import { ref, getDatabase, set, get, remove, push } from 'firebase/database'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 import { useObject } from 'react-firebase-hooks/database'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { styled, useTheme } from '@mui/material/styles'
 import {
@@ -115,6 +115,9 @@ export const MintSquad = ({
             ? snapshots.val()[activeProjectKey]
             : null
 
+    useEffect(() => {
+        setActiveProjectKey(null)
+    }, [isSuggestMints])
     const handleUpdateVote = (vote) => {
         const voteOptions = ['mint', 'pass', 'rug']
         // dbRef.transaction((currentValue) => {
@@ -185,27 +188,28 @@ export const MintSquad = ({
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader />
 
-                <List>
-                    {hasEditAccess && (
-                        <>
-                            <ListItemButton onClick={handleAddProject}>
-                                <ListItemIcon>
-                                    <AddCircleOutlined
-                                        sx={{
-                                            height: '40px',
-                                            width: '40px',
-                                            color: 'white',
-                                        }}
+                <List sx={{ overflow: 'scroll' }}>
+                    {hasEditAccess ||
+                        (isSuggestMints && (
+                            <>
+                                <ListItemButton onClick={handleAddProject}>
+                                    <ListItemIcon>
+                                        <AddCircleOutlined
+                                            sx={{
+                                                height: '40px',
+                                                width: '40px',
+                                                color: 'white',
+                                            }}
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        sx={{ color: 'white' }}
+                                        primary="Add Project"
                                     />
-                                </ListItemIcon>
-                                <ListItemText
-                                    sx={{ color: 'white' }}
-                                    primary="Add Project"
-                                />
-                            </ListItemButton>
-                            <Divider />
-                        </>
-                    )}
+                                </ListItemButton>
+                                <Divider />
+                            </>
+                        ))}
                     {!loading &&
                         snapshots.val() &&
                         Object.keys(snapshots.val())

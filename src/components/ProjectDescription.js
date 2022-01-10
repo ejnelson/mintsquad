@@ -205,7 +205,7 @@ export const ProjectDescription = ({
                     />
                     <Chip
                         icon={<AccessTimeFilledRounded />}
-                        label={`Count down to mint:
+                        label={`Count down:
                         ${timer.days} : ${timer.hours} : ${timer.minutes} : ${timer.seconds}`}
                         sx={{ marginLeft: '8px' }}
                     />
