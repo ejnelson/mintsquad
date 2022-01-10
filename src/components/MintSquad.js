@@ -94,7 +94,11 @@ const Drawer = styled(MuiDrawer, {
     }),
 }))
 
-export const MintSquad = ({ hasEditAccess, walletId, isSuggestMints }) => {
+export const MintSquad = ({
+    hasEditAccess,
+    walletId,
+    isSuggestMints = false,
+}) => {
     const [activeProjectKey, setActiveProjectKey] = useState(null)
     const theme = useTheme()
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -207,9 +211,10 @@ export const MintSquad = ({ hasEditAccess, walletId, isSuggestMints }) => {
                         Object.keys(snapshots.val())
                             .filter(
                                 (key) =>
-                                    snapshots.val()[key].archived !== true &&
-                                    snapshots.val()[key].suggested ===
-                                        isSuggestMints
+                                    console.log('key', snapshots.val()[key]) ||
+                                    (snapshots.val()[key].archived !== true &&
+                                        snapshots.val()[key].suggested ===
+                                            isSuggestMints)
                             )
                             .sort((key1, key2) => {
                                 return compareAsc(
