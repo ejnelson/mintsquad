@@ -283,17 +283,17 @@ export const AddProjectModal = ({
                         </Box>
                     )
                 })}
-                {!suggested && (
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-                        <TextField
-                            label="Your discord handle"
-                            placeholder=""
-                            margin="normal"
-                            sx={{ marginRight: '16px' }}
-                            variant="outlined"
-                            value={values.squadLeader}
-                            onChange={handleChange('squadLeader')}
-                        />
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <TextField
+                        label="Your discord handle"
+                        placeholder=""
+                        margin="normal"
+                        sx={{ marginRight: '16px' }}
+                        variant="outlined"
+                        value={values.squadLeader}
+                        onChange={handleChange('squadLeader')}
+                    />
+                    {!suggested && (
                         <FormControlLabel
                             label="Post project to discord"
                             control={
@@ -307,8 +307,8 @@ export const AddProjectModal = ({
                                 />
                             }
                         />
-                    </Box>
-                )}
+                    )}
+                </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
                         onClick={handleCancel}

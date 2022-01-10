@@ -31,6 +31,7 @@ import {
     SentimentVeryDissatisfiedRounded,
     CheckCircleRounded,
     LanguageRounded,
+    AccountCircleRounded,
 } from '@mui/icons-material'
 import {
     parseISO,
@@ -208,7 +209,13 @@ export const ProjectDescription = ({
                         ${timer.days} : ${timer.hours} : ${timer.minutes} : ${timer.seconds}`}
                         sx={{ marginLeft: '8px' }}
                     />
-
+                    {activeData.squadLeader && (
+                        <Chip
+                            icon={<AccountCircleRounded />}
+                            label={activeData.squadLeader}
+                            sx={{ marginLeft: '8px' }}
+                        />
+                    )}
                     <IconButton
                         // variant="contained"
                         target="_blank"

@@ -211,10 +211,9 @@ export const MintSquad = ({
                         Object.keys(snapshots.val())
                             .filter(
                                 (key) =>
-                                    console.log('key', snapshots.val()[key]) ||
-                                    (snapshots.val()[key].archived !== true &&
-                                        snapshots.val()[key].suggested ===
-                                            isSuggestMints)
+                                    snapshots.val()[key].archived !== true &&
+                                    snapshots.val()[key].suggested ===
+                                        isSuggestMints
                             )
                             .sort((key1, key2) => {
                                 return compareAsc(
