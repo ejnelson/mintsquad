@@ -34,7 +34,7 @@ const initialState = {
     whiteListForm: '',
     squadLeader: '',
     images: [''],
-    mintDate: format(new Date(), "yyyy-MM-dd'T'H:mm:ss") + 'Z',
+    mintDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss") + 'Z',
 }
 
 export const AddProjectModal = ({
@@ -93,7 +93,7 @@ export const AddProjectModal = ({
         } else {
             push(ref(getDatabase()), {
                 ...values,
-                mintDate: values.mintDate.toString(),
+                mintDate: values.mintDate,
                 twitterIcon,
                 votes: '',
                 suggested,

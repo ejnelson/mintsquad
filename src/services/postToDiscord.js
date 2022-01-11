@@ -24,7 +24,6 @@ export const postToDiscord = async (values) => {
             {
                 author: {
                     name: `Squad Leader: ${squadLeader || 'anonymous'}`,
-                    // url: 'Minne_ape_olis#5330',
                     // icon_url:
                     //     'https://4isvscpdfnv4drliginehkrgo4filrahutre5bubppjxm3c2ixpq.arweave.net/4iVZCeMra8HFaDIaQ6omdwqFxAek4k6GgXvTdmxaRd8/?ext=png',
                 },
