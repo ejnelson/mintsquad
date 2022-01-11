@@ -120,7 +120,7 @@ export const Layout = () => {
                                 },
                             }}
                         />
-                        <Tab
+                        {/* <Tab
                             value="/alpha"
                             label="Alpha"
                             component={Link}
@@ -147,7 +147,7 @@ export const Layout = () => {
                                         theme.palette.background.dark,
                                 },
                             }}
-                        />
+                        /> */}
                     </Tabs>
 
                     <IconButton
