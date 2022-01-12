@@ -69,7 +69,7 @@ export const ProjectDescription = ({
         seconds: 0,
     })
     useEffect(() => {
-        const vote = Object.keys(activeData?.votes).reduce((acc, key) => {
+        const vote = Object.keys(activeData?.votes || {}).reduce((acc, key) => {
             let reducerValue = ''
             if (Object.keys(activeData.votes[key]).includes(walletId)) {
                 return key
