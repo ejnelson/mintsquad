@@ -199,7 +199,7 @@ export const ProjectDescription = ({
                                 "yyyy-MM-dd'T'HH:mm:ss'Z'",
                                 new Date()
                             ),
-                            "MMM dd K:mm a 'UTC'"
+                            "MMM dd HH:mm a 'UTC'"
                         )}
                         sx={{ marginLeft: '8px' }}
                     />

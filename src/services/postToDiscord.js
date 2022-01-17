@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { parse, format } from 'date-fns'
 
 export const postToDiscord = async (values) => {
     const {
@@ -45,7 +46,18 @@ export const postToDiscord = async (values) => {
                     },
                     {
                         name: 'Mint Date',
-                        value: `${mintDate || 'TBA'}`,
+                        value: `${
+                            mintDate
+                                ? format(
+                                      parse(
+                                          mintDate,
+                                          "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                                          new Date()
+                                      ),
+                                      "MMM dd HH:mm a 'UTC'"
+                                  )
+                                : 'TBA'
+                        }`,
                         inline: true,
                     },
                     {
@@ -61,6 +73,10 @@ export const postToDiscord = async (values) => {
                     {
                         name: 'Overview',
                         value: `${overview || 'DYOR'}`,
+                    },
+                    {
+                        name: 'Link to Mintsquad.academy',
+                        value: `[Mintsquad.academy](https://mintsquad.academy)`,
                     },
                 ],
                 // thumbnail: {
@@ -176,16 +192,16 @@ export const postToDiscord = async (values) => {
     //     ],
     // }
     //test channel
-    const res = await axios.post(
-        'https://discord.com/api/webhooks/929534918164348948/rAGUeFWeuSrfGkmn26RoUBMH4ycIn5CjngisNGcb5rxgQ4dTJ-SCLJlzH7-5lXRzD0kX',
+    // const res = await axios.post(
+    //     'https://discord.com/api/webhooks/932709353570578532/g8QyvJBeY98mxeTjtkudq3svpb4x0n5iYhnAUzCr16bUlyXZY_89WN6y5KppLRkwzIlT',
 
-        payload
-    )
-    // console.log('res', res)
-    // announcemints
-    // const res2 = await axios.post(
-    //     'https://discord.com/api/webhooks/929125864526975096/xAbX1-z4_K73NEg-mx_W7xEzx3sGP918bYMNpFlDWXGZc3YjutsA7_jFby7nnu9eYO_A',
     //     payload
     // )
-    return res
+
+    // announcemints
+    const res2 = await axios.post(
+        'https://discord.com/api/webhooks/932707827078791198/8ZYvcdJd4vwoDHdFgcLT7nqFXc4f7AAKEN8ge7Zxq-rR6zWqWdMweUcUyt9sAWnXJ0qh',
+        payload
+    )
+    return res2
 }
