@@ -18,8 +18,8 @@ export const postToDiscord = async (values) => {
 
     const payload = {
         username: 'MintSquad',
-        avatar_url:
-            'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/crystal-ball_1f52e.png',
+        // avatar_url:
+        // 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/crystal-ball_1f52e.png',
         // content: 'Text message. Up to 2000 characters.',
         embeds: [
             {
@@ -199,9 +199,9 @@ export const postToDiscord = async (values) => {
     // )
 
     // announcemints
-    const res2 = await axios.post(
-        'https://discord.com/api/webhooks/932707827078791198/8ZYvcdJd4vwoDHdFgcLT7nqFXc4f7AAKEN8ge7Zxq-rR6zWqWdMweUcUyt9sAWnXJ0qh',
+    const res = await axios.post(
+        'https://discord.com/api/webhooks/933070460667699260/Y5uzNlA3cjqbrwQm85xl-al9Zqz_uX9_OG20rDDzNVVRYNlXWc2EkP1wuT8k5SivFYx5',
         payload
     )
-    return res2
+    return res
 }
