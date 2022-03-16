@@ -14,6 +14,7 @@ const validAuthorities = [
     // 'BV8MTEdwNVCjqJEaFMVkSVok3J6p6Fj4GDuQ1AYdchaW', trashpanda
     // 'trshC9cTgL3BPXoAbp5w9UfnUMWEJx5G61vUijXPMLH',trashpanda
     'DC2mkgwhy56w3viNtHDjJQmc7SGu2QX785bS4aexojwX',
+    '9uBX3ASjxWvNBAD1xjbVaKA74mWGZys3RGSF7DdeDD3F',
 ]
 
 const editAccessTokenIds = {

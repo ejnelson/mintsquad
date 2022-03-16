@@ -17,6 +17,8 @@ export const postToDiscord = async (values) => {
     } = values
 
     const payload = {
+        type: 1,
+        channel_id: '909624010487255071',
         username: 'MintSquad',
         // avatar_url:
         // 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/crystal-ball_1f52e.png',
