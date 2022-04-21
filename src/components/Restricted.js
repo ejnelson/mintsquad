@@ -43,9 +43,10 @@ export const Restricted = () => {
         // pass your connection object to use specific RPC node
         connection,
     })
-    const walletHasValidNfts = nfts?.some((nft) =>
-        validAuthorities.includes(nft.updateAuthority)
-    )
+    // const walletHasValidNfts = nfts?.some((nft) =>
+    //     validAuthorities.includes(nft.updateAuthority)
+    // )
+    const walletHasValidNfts = true
     const walletHasEditAccessToken = nfts?.some((nft) =>
         Object.values(editAccessTokenIds).includes(nft.mint)
     )
