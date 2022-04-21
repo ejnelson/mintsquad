@@ -201,9 +201,9 @@ export const postToDiscord = async (values) => {
     // )
 
     // announcemints
-    const res = await axios.post(
-        'https://discord.com/api/webhooks/933070460667699260/Y5uzNlA3cjqbrwQm85xl-al9Zqz_uX9_OG20rDDzNVVRYNlXWc2EkP1wuT8k5SivFYx5',
-        payload
-    )
-    return res
+    // const res = await axios.post(
+    //     'https://discord.com/api/webhooks/933070460667699260/Y5uzNlA3cjqbrwQm85xl-al9Zqz_uX9_OG20rDDzNVVRYNlXWc2EkP1wuT8k5SivFYx5',
+    //     payload
+    // )
+    // return res
 }

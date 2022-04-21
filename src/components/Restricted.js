@@ -47,9 +47,10 @@ export const Restricted = () => {
     //     validAuthorities.includes(nft.updateAuthority)
     // )
     const walletHasValidNfts = true
-    const walletHasEditAccessToken = nfts?.some((nft) =>
-        Object.values(editAccessTokenIds).includes(nft.mint)
-    )
+    // const walletHasEditAccessToken = nfts?.some((nft) =>
+    //     Object.values(editAccessTokenIds).includes(nft.mint)
+    // )
+    const walletHasEditAccessToken = true
     return (
         <>
             {isLoading ? (
